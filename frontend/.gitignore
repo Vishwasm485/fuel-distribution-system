@@ -1,0 +1,34 @@
+# ======================
+# PYTHON
+# ======================
+frontend/node_modules/
+frontend/.next/
+backend/venv/
+__pycache__/
+.env
+
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+backend/.env
+
+# ======================
+# NODE
+# ======================
+
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# ======================
+# VS CODE
+# ======================
+
+.vscode/
+
+# ======================
+# SYSTEM FILES
+# ======================
+
+.DS_Store
+Thumbs.db
