@@ -9,7 +9,8 @@ from app.controllers.distributor.distributor_controller import (
     accept_booking,
     reject_booking,
     mark_delivered,
-    view_revenue
+    view_revenue,
+    delete_fuel_price
 )
 distributor_bp = Blueprint(
     "distributor_bp",
@@ -122,3 +123,14 @@ def delivered(id):
 )
 def revenue(distributor_id):
     return view_revenue(distributor_id)
+
+# =========================================
+# DELETE FUEL PRICE
+# =========================================
+
+@distributor_bp.route(
+    "/delete-fuel-price/<int:id>",
+    methods=["DELETE"]
+)
+def delete_fuel(id):
+    return delete_fuel_price(id)

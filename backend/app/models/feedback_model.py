@@ -40,3 +40,8 @@ class Feedback(db.Model):
         db.DateTime,
         server_default=db.func.now()
     )
+
+    distributor_id = db.Column(
+    db.Integer,
+    db.ForeignKey("distributors.id")
+)

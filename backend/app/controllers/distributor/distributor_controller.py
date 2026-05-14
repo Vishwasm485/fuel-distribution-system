@@ -318,3 +318,32 @@ def view_revenue(distributor_id):
         "success": True,
         "revenue": revenue_list
     }), 200
+
+# =========================================
+# Delete fuel price
+# =========================================
+def delete_fuel_price(id):
+
+    fuel = FuelPrice.query.get(id)
+
+    if not fuel:
+
+        return jsonify({
+
+            "success": False,
+
+            "message": "Fuel not found"
+
+        }), 404
+
+    db.session.delete(fuel)
+
+    db.session.commit()
+
+    return jsonify({
+
+        "success": True,
+
+        "message": "Fuel deleted successfully"
+
+    }), 200

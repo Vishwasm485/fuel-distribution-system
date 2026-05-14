@@ -1,6 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+  useEffect
+} from "react";
+
+import { Star } from "lucide-react";
 
 import toast from "react-hot-toast";
 
@@ -9,27 +14,117 @@ import API from "@/services/api";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
 export default function FeedbackPage() {
+  const [distributors, setDistributors] =
+  useState<any[]>([]);
+
+  const [filteredDistributors, setFilteredDistributors] =
+    useState<any[]>([]);
+
+  const [search, setSearch] =
+    useState("");
+  
+  const customer = JSON.parse(
+    localStorage.getItem("customer") || "{}"
+  );
+
+  const fetchDistributors = async () => {
+
+    try {
+
+      const response = await API.get(
+        "/customer/view-distributors"
+      );
+
+      setDistributors(
+        response.data.distributors
+      );
+
+      setFilteredDistributors(
+        response.data.distributors
+      );
+
+    }
+
+    catch{
+
+      toast.error(
+        "Failed to load distributors"
+      );
+    }
+  };
+  useEffect(() => {
+
+    fetchDistributors();
+
+  }, []);
+
+  useEffect(() => {
+
+  const filtered =
+    distributors.filter((distributor) =>
+
+      distributor.name
+        .toLowerCase()
+        .includes(search.toLowerCase())
+
+      ||
+
+      distributor.city
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
+
+  setFilteredDistributors(filtered);
+
+}, [search, distributors]);
 
   const [formData, setFormData] =
     useState({
-      customer_id: "",
+
+      distributor_id: "",
+
       rating: "5",
+
       message: "",
     });
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLSelectElement
+    >
+  ) => {
 
+    setFormData({
+
+      ...formData,
+
+      [e.target.name]:
+        e.target.value,
+    });
+  };
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
 
     e.preventDefault();
+      if(!formData.distributor_id){
 
+        toast.error(
+          "Please select distributor"
+        );
+
+        return;
+      }
     try {
 
-      await API.post(
+       await API.post(
         "/customer/add-feedback",
         {
+
           customer_id:
-            Number(formData.customer_id),
+            customer.id,
+
+          distributor_id:
+            Number(formData.distributor_id),
 
           rating:
             Number(formData.rating),
@@ -44,10 +139,12 @@ export default function FeedbackPage() {
       );
 
       setFormData({
-        customer_id: "",
+        distributor_id: "",
         rating: "5",
         message: "",
+        
       });
+      setSearch: ("");
 
     }
 
@@ -71,55 +168,82 @@ export default function FeedbackPage() {
         onSubmit={handleSubmit}
         className="bg-slate-900 p-8 rounded-xl max-w-xl"
       >
-
         <input
-          type="number"
-          placeholder="Customer ID"
-          value={formData.customer_id}
+          type="text"
+          placeholder="Search Distributor by Name or City"
+          value={search}
           onChange={(e) =>
-            setFormData({
-              ...formData,
-              customer_id:
-                e.target.value,
-            })
+            setSearch(e.target.value)
           }
-          className="w-full p-3 rounded mb-4"
+          className="w-full p-3 rounded bg-slate-800 mb-4"
         />
 
         <select
-          value={formData.rating}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              rating:
-                e.target.value,
-            })
-          }
-          className="w-full p-3 rounded mb-4"
+          name="distributor_id"
+          value={formData.distributor_id}
+          onChange={handleChange}
+          className="w-full p-3 rounded bg-slate-800 mb-4"
         >
 
-          <option value="5">
-            ⭐⭐⭐⭐⭐
+          <option value="">
+            Select Distributor
           </option>
 
-          <option value="4">
-            ⭐⭐⭐⭐
-          </option>
+          {filteredDistributors.map((distributor) => (
 
-          <option value="3">
-            ⭐⭐⭐
-          </option>
+            <option
+              key={distributor.id}
+              value={distributor.id}
+            >
 
-          <option value="2">
-            ⭐⭐
-          </option>
+              {distributor.name} ({distributor.city})
 
-          <option value="1">
-            ⭐
-          </option>
+            </option>
+
+          ))}
 
         </select>
+         <div className="flex gap-2 mb-6">
 
+            {[1,2,3,4,5].map((star) => (
+
+              <button
+                type="button"
+                key={star}
+                onClick={() =>
+                  setFormData({
+
+                    ...formData,
+
+                    rating: String(star)
+                  })
+                }
+              >
+
+                <Star
+
+                  size={34}
+
+                  className={`transition-all duration-200
+
+                  ${
+                    Number(formData.rating) >= star
+
+                    ?
+
+                    "fill-yellow-400 text-yellow-400 scale-110"
+
+                    :
+
+                    "text-gray-500"
+                  }`}
+                />
+
+              </button>
+
+            ))}
+
+          </div>
         <textarea
           placeholder="Feedback Message"
           value={formData.message}

@@ -12,6 +12,20 @@ backend/__pycache__/
 backend/**/*.pyc
 backend/.env
 
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Next.js
+frontend/.next/
+frontend/node_modules/
+
+# Environment
+.env
+
+# Logs
+*.log
 # ======================
 # NODE
 # ======================
