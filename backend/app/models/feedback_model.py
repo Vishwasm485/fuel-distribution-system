@@ -41,7 +41,3 @@ class Feedback(db.Model):
         server_default=db.func.now()
     )
 
-    distributor_id = db.Column(
-    db.Integer,
-    db.ForeignKey("distributors.id")
-)

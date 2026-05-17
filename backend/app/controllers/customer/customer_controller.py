@@ -302,19 +302,60 @@ def add_feedback():
 
     data = request.get_json()
 
+    print(data)
+
+    booking_id = data.get("booking_id")
+
+    customer_id = data.get("customer_id")
+
+    distributor_id = data.get("distributor_id")
+
+    rating = data.get("rating")
+
+    feedback_message = data.get("feedback_message")
+
+    # =========================================
+    # VALIDATION
+    # =========================================
+
+    if not booking_id:
+
+        return jsonify({
+
+            "message":
+                "Booking ID required"
+
+        }), 400
+
+    if not distributor_id:
+
+        return jsonify({
+
+            "message":
+                "Distributor ID required"
+
+        }), 400
+
+    if not feedback_message:
+
+        return jsonify({
+
+            "message":
+                "Feedback message required"
+
+        }), 400
+
     feedback = Feedback(
 
-        customer_id=data.get(
-            "customer_id"
-        ),
+        booking_id=booking_id,
 
-        rating=data.get(
-            "rating"
-        ),
+        customer_id=customer_id,
 
-        message=data.get(
-            "message"
-        )
+        distributor_id=distributor_id,
+
+        rating=rating,
+
+        feedback_message=feedback_message
     )
 
     db.session.add(feedback)
@@ -322,6 +363,8 @@ def add_feedback():
     db.session.commit()
 
     return jsonify({
-        "success": True,
-        "message": "Feedback submitted"
+
+        "message":
+            "Feedback added successfully"
+
     }), 201

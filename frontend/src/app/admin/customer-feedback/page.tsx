@@ -58,24 +58,32 @@ export default function CustomerFeedbackPage() {
 
           <div
             key={item.id}
-            className="bg-slate-900 p-6 rounded-xl"
+            className="bg-slate-900 p-6 rounded-xl border border-slate-800"
           >
 
-            <h2 className="text-2xl font-bold text-orange-400 mb-4">
-              Customer ID:
-              {" "}
-              {item.customer_id}
+            <h2 className="text-2xl font-bold text-orange-400 mb-3">
+              Customer #{item.customer_id}
             </h2>
 
-            <p className="mb-3">
-              Rating:
+            <p className="mb-2 text-gray-300">
+              Distributor ID:
               {" "}
+              {item.distributor_id}
+            </p>
+
+            <p className="mb-2 text-gray-300">
+              Booking ID:
+              {" "}
+              {item.booking_id}
+            </p>
+
+            <p className="mb-4 text-yellow-400 text-xl">
               {"⭐".repeat(item.rating)}
             </p>
 
-            <p>
-              {item.message}
-            </p>
+            <div className="bg-slate-800 p-4 rounded-lg text-gray-200">
+              {item.feedback_message}
+            </div>
 
           </div>
 

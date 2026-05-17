@@ -169,7 +169,7 @@ export default function ViewFuelPricesPage() {
             {fuelPrices.map((fuel) => (
 
               <tr
-                key={fuel.fuel_price_id}
+                key={fuel.id}
                 className="border-b border-slate-700"
               >
 
@@ -184,7 +184,7 @@ export default function ViewFuelPricesPage() {
 
                 {
 
-editingId === fuel.fuel_price_id
+editingId === fuel.id
 
 ?
 
@@ -203,7 +203,7 @@ editingId === fuel.fuel_price_id
   <button
     onClick={() =>
       updateFuel(
-        fuel.fuel_price_id
+        fuel.id
       )
     }
     className="bg-green-500 px-3 py-2 rounded"
@@ -219,7 +219,7 @@ editingId === fuel.fuel_price_id
   onClick={() => {
 
     setEditingId(
-      fuel.fuel_price_id
+      fuel.id
     );
 
     setNewPrice(
@@ -236,7 +236,7 @@ editingId === fuel.fuel_price_id
                 <button
                   onClick={() =>
                     deleteFuel(
-                      fuel.fuel_price_id
+                      fuel.id
                     )
                   }
                   className="bg-red-500 px-4 py-2 rounded"

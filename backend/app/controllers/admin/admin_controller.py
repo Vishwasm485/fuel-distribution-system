@@ -192,19 +192,31 @@ def view_feedbacks():
 
             "id": feedback.id,
 
+            "booking_id":
+                feedback.booking_id,
+
             "customer_id":
                 feedback.customer_id,
+
+            "distributor_id":
+                feedback.distributor_id,
 
             "rating":
                 feedback.rating,
 
-            "message":
-                feedback.message
+            "feedback_message":
+                feedback.feedback_message,
+
+            "created_at":
+                feedback.created_at
         })
 
     return jsonify({
+
         "success": True,
+
         "feedbacks": feedback_list
+
     }), 200
 # =========================================
 # ADMIN DASHBOARD STATS

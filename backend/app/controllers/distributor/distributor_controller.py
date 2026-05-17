@@ -347,3 +347,39 @@ def delete_fuel_price(id):
         "message": "Fuel deleted successfully"
 
     }), 200
+
+# =========================================
+# DISTRIBUTOR DASHBOARD
+# =========================================
+
+def distributor_dashboard(distributor_id):
+
+    total_fuel_types = FuelPrice.query.filter_by(
+        distributor_id=distributor_id
+    ).count()
+
+    total_bookings = Booking.query.filter_by(
+        distributor_id=distributor_id
+    ).count()
+
+    revenue = db.session.query(
+        func.sum(Booking.total_price)
+    ).filter(
+        Booking.distributor_id == distributor_id,
+        Booking.booking_status == "Delivered"
+    ).scalar()
+
+    return jsonify({
+
+        "success": True,
+
+        "fuel_types":
+            total_fuel_types,
+
+        "total_bookings":
+            total_bookings,
+
+        "revenue":
+            float(revenue or 0)
+
+    }), 200

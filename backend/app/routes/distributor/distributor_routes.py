@@ -1,7 +1,9 @@
 from flask import Blueprint
 
 from app.controllers.distributor.distributor_controller import (
+    
     distributor_login,
+    distributor_dashboard,
     add_fuel_price,
     view_fuel_prices,
     update_fuel_price,
@@ -29,6 +31,17 @@ distributor_bp = Blueprint(
 def login():
     return distributor_login()
 
+# =========================================
+# DISTRIBUTOR DASHBOARD
+# =========================================
+
+@distributor_bp.route(
+    "/dashboard/<int:distributor_id>",
+    methods=["GET"]
+)
+def dashboard(distributor_id):
+
+    return distributor_dashboard(distributor_id)
 
 # =========================================
 # ADD FUEL PRICE
