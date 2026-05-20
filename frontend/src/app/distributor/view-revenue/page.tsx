@@ -11,6 +11,8 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./view-revenue.css";
+
 export default function RevenuePage() {
 
   const [revenues, setRevenues] =
@@ -54,70 +56,80 @@ export default function RevenuePage() {
 
     <DashboardLayout role="distributor">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Revenue Details
-      </h1>
+      <div className="revenue-page">
 
-      <div className="overflow-auto">
+        <div className="revenue-header">
 
-        <table className="w-full bg-slate-900 rounded-xl overflow-hidden">
+          <h1>
+            Revenue Details
+          </h1>
 
-          <thead className="bg-orange-500">
+          <p>
+            Monitor sales performance and delivered fuel revenue.
+          </p>
 
-            <tr>
+        </div>
 
-              <th className="p-4">
-                Date
-              </th>
+        <div className="revenue-grid">
 
-              <th className="p-4">
-                Fuel Type
-              </th>
+          {revenues.map((revenue, index) => (
 
-              <th className="p-4">
-                Total Quantity
-              </th>
+            <div
+              key={index}
+              className="revenue-card"
+            >
 
-              <th className="p-4">
-                Total Revenue
-              </th>
+              <div className="revenue-date">
 
-            </tr>
+                {revenue.date}
 
-          </thead>
+              </div>
 
-          <tbody>
+              <div className="revenue-section">
 
-            {revenues.map((revenue, index) => (
+                <span>
+                  Fuel Type
+                </span>
 
-              <tr
-                key={index}
-                className="border-b border-slate-700"
-              >
-
-                <td className="p-4">
-                  {revenue.date}
-                </td>
-
-                <td className="p-4">
+                <h2>
                   {revenue.fuel_type}
-                </td>
+                </h2>
 
-                <td className="p-4">
-                  {revenue.total_quantity}
-                </td>
+              </div>
 
-                <td className="p-4 text-green-400 font-bold">
-                  ₹ {revenue.total_price}
-                </td>
+              <div className="revenue-info-grid">
 
-              </tr>
+                <div className="info-box">
 
-            ))}
+                  <span>
+                    Quantity
+                  </span>
 
-          </tbody>
+                  <p>
+                    {revenue.total_quantity}
+                  </p>
 
-        </table>
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Revenue
+                  </span>
+
+                  <p className="green-text">
+                    ₹ {revenue.total_price}
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
 
       </div>
 

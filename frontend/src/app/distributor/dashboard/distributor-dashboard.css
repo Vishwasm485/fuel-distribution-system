@@ -1,0 +1,79 @@
+.distributor-dashboard{
+  width: 100%;
+}
+
+.dashboard-header{
+  margin-bottom: 28px;
+}
+
+.dashboard-header h1{
+  font-size: 36px;
+
+  font-weight: 800;
+
+  color: #f97316;
+
+  margin-bottom: 6px;
+}
+
+.dashboard-header p{
+  color: #94a3b8;
+
+  font-size: 15px;
+}
+
+.dashboard-grid{
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(240px,1fr));
+
+  gap: 22px;
+}
+
+.dashboard-card{
+  background:
+    rgba(15,23,42,0.78);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 28px;
+
+  padding: 24px;
+
+  transition: 0.3s;
+}
+
+.dashboard-card:hover{
+  transform: translateY(-4px);
+
+  border-color:
+    rgba(249,115,22,0.35);
+}
+
+.dashboard-card span{
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+
+  text-transform: uppercase;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 14px;
+}
+
+.dashboard-card h2{
+  font-size: 42px;
+
+  font-weight: 800;
+
+  color: #f97316;
+}
+
+.revenue-card h2{
+  color: #22c55e;
+}

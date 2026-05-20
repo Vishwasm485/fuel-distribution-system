@@ -1,0 +1,99 @@
+.fuel-price-page{
+  width: 100%;
+}
+
+.fuel-price-header{
+  margin-bottom: 24px;
+}
+
+.fuel-price-header h1{
+  font-size: 34px;
+
+  font-weight: 800;
+
+  color: #f97316;
+
+  margin-bottom: 6px;
+}
+
+.fuel-price-header p{
+  color: #94a3b8;
+
+  font-size: 15px;
+}
+
+.fuel-price-form{
+  width: 100%;
+  max-width: 520px;
+
+  background:
+    rgba(15,23,42,0.78);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 26px;
+
+  padding: 26px;
+}
+
+.input-group{
+  margin-bottom: 22px;
+}
+
+.input-group label{
+  display: block;
+
+  color: #f97316;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  margin-bottom: 10px;
+}
+
+.fuel-input{
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 16px;
+
+  border:
+    1px solid #334155;
+
+  background: #0f172a;
+
+  color: white;
+
+  font-size: 14px;
+}
+
+.fuel-input:focus{
+  border-color: #f97316;
+}
+
+.fuel-submit-btn{
+  border: none;
+
+  background: #f97316;
+
+  color: white;
+
+  padding: 14px 22px;
+
+  border-radius: 16px;
+
+  font-weight: 700;
+
+  font-size: 15px;
+
+  transition: 0.3s;
+}
+
+.fuel-submit-btn:hover{
+  background: #ea580c;
+
+  transform: translateY(-2px);
+}

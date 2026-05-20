@@ -11,6 +11,8 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./distributor-dashboard.css";
+
 export default function DistributorDashboard() {
 
   const [stats, setStats] =
@@ -73,45 +75,57 @@ export default function DistributorDashboard() {
 
     <DashboardLayout role="distributor">
 
-      <h1 className="text-5xl font-bold text-orange-500 mb-10">
-        Distributor Dashboard
-      </h1>
+      <div className="distributor-dashboard">
 
-      <div className="grid grid-cols-3 gap-6">
+        <div className="dashboard-header">
 
-        <div className="bg-slate-900 p-6 rounded-xl">
+          <h1>
+            Distributor Dashboard
+          </h1>
 
-          <h2 className="text-2xl text-white mb-2">
-            Fuel Types
-          </h2>
-
-          <p className="text-4xl font-bold text-orange-400">
-            {stats.fuel_types}
+          <p>
+            Monitor bookings, fuel inventory and revenue.
           </p>
 
         </div>
 
-        <div className="bg-slate-900 p-6 rounded-xl">
+        <div className="dashboard-grid">
 
-          <h2 className="text-2xl text-white mb-2">
-            Total Bookings
-          </h2>
+          <div className="dashboard-card">
 
-          <p className="text-4xl font-bold text-orange-400">
-            {stats.total_bookings}
-          </p>
+            <span>
+              Fuel Types
+            </span>
 
-        </div>
+            <h2>
+              {stats.fuel_types}
+            </h2>
 
-        <div className="bg-slate-900 p-6 rounded-xl">
+          </div>
 
-          <h2 className="text-2xl text-white mb-2">
-            Revenue
-          </h2>
+          <div className="dashboard-card">
 
-          <p className="text-4xl font-bold text-orange-400">
-            ₹ {stats.revenue}
-          </p>
+            <span>
+              Total Bookings
+            </span>
+
+            <h2>
+              {stats.total_bookings}
+            </h2>
+
+          </div>
+
+          <div className="dashboard-card revenue-card">
+
+            <span>
+              Revenue
+            </span>
+
+            <h2>
+              ₹ {stats.revenue}
+            </h2>
+
+          </div>
 
         </div>
 

@@ -8,15 +8,19 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./add-fuel-price.css";
+
 export default function AddFuelPricePage() {
 
   const [formData, setFormData] = useState({
     fuel_type: "",
     price: "",
   });
+
   const distributor = JSON.parse(
     localStorage.getItem("distributor") || "{}"
   );
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -40,6 +44,7 @@ export default function AddFuelPricePage() {
         {
           distributor_id:
             distributor.id,
+
           fuel_type:
             formData.fuel_type,
 
@@ -72,41 +77,71 @@ export default function AddFuelPricePage() {
 
     <DashboardLayout role="distributor">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Add Fuel Price
-      </h1>
+      <div className="fuel-price-page">
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-slate-900 p-8 rounded-xl max-w-xl"
-      >
+        <div className="fuel-price-header">
 
-        <input
-          type="text"
-          name="fuel_type"
-          placeholder="Fuel Type"
-          value={formData.fuel_type}
-          onChange={handleChange}
-          className="w-full p-3 rounded mb-4"
-        />
+          <h1>
+            Add Fuel Price
+          </h1>
 
-        <input
-          type="number"
-          name="price"
-          placeholder="Price Per Liter"
-          value={formData.price}
-          onChange={handleChange}
-          className="w-full p-3 rounded mb-6"
-        />
+          <p>
+            Add new fuel type and update latest pricing.
+          </p>
 
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg"
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="fuel-price-form"
         >
-          Add Fuel Price
-        </button>
 
-      </form>
+          <div className="input-group">
+
+            <label>
+              Fuel Type
+            </label>
+
+            <input
+              type="text"
+              name="fuel_type"
+              placeholder="Petrol / Diesel / Gas"
+              value={formData.fuel_type}
+              onChange={handleChange}
+              className="fuel-input"
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Price Per Liter
+            </label>
+
+            <input
+              type="number"
+              name="price"
+              placeholder="Enter amount"
+              value={formData.price}
+              onChange={handleChange}
+              className="fuel-input"
+            />
+
+          </div>
+
+          <button
+            type="submit"
+            className="fuel-submit-btn"
+          >
+
+            Add Fuel Price
+
+          </button>
+
+        </form>
+
+      </div>
 
     </DashboardLayout>
   );

@@ -8,6 +8,8 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./view-fuel-prices.css";
+
 export default function ViewFuelPricesPage() {
 
   const [fuelPrices, setFuelPrices] =
@@ -23,47 +25,47 @@ export default function ViewFuelPricesPage() {
     useState("");
 
   const updateFuel = async (
-  id: number
-) => {
+    id: number
+  ) => {
 
-  if(!newPrice){
+    if(!newPrice){
 
-    toast.error(
-      "Enter new price"
-    );
+      toast.error(
+        "Enter new price"
+      );
 
-    return;
-  }
+      return;
+    }
 
-  try {
+    try {
 
-    await API.put(
-      `/distributor/update-fuel-price/${id}`,
-      {
-        price: Number(newPrice)
-      }
-    );
+      await API.put(
+        `/distributor/update-fuel-price/${id}`,
+        {
+          price: Number(newPrice)
+        }
+      );
 
-    toast.success(
-      "Fuel Updated"
-    );
+      toast.success(
+        "Fuel Updated"
+      );
 
-    setEditingId(null);
+      setEditingId(null);
 
-    setNewPrice("");
+      setNewPrice("");
 
-    fetchFuelPrices();
+      fetchFuelPrices();
 
-  }
+    }
 
-  catch{
+    catch{
 
-    toast.error(
-      "Update Failed"
-    );
-  }
-};
-  
+      toast.error(
+        "Update Failed"
+      );
+    }
+  };
+
   const fetchFuelPrices = async () => {
 
     if(!distributor?.id) return;
@@ -87,7 +89,7 @@ export default function ViewFuelPricesPage() {
       );
     }
   };
- 
+
   useEffect(() => {
 
     const storedDistributor = JSON.parse(
@@ -105,7 +107,7 @@ export default function ViewFuelPricesPage() {
       fetchFuelPrices();
     }
 
-  }, [distributor]);  
+  }, [distributor]);
 
   const deleteFuel = async (
     id: number
@@ -137,122 +139,123 @@ export default function ViewFuelPricesPage() {
 
     <DashboardLayout role="distributor">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        View Fuel Prices
-      </h1>
+      <div className="fuel-page">
 
-      <div className="overflow-auto">
+        <div className="fuel-header">
 
-        <table className="w-full bg-slate-900 rounded-xl overflow-hidden">
+          <h1>
+            Fuel Prices
+          </h1>
 
-          <thead className="bg-orange-500">
+          <p>
+            Manage fuel pricing and update latest rates.
+          </p>
 
-            <tr>
+        </div>
 
-              <th className="p-4">
-                Fuel Type
-              </th>
+        <div className="fuel-grid">
 
-              <th className="p-4">
-                Price
-              </th>
+          {fuelPrices.map((fuel) => (
 
-              <th className="p-4">
-                Actions
-              </th>
-            </tr>
+            <div
+              key={fuel.id}
+              className="fuel-card"
+            >
 
-          </thead>
+              <div className="fuel-top">
 
-          <tbody>
+                <div>
 
-            {fuelPrices.map((fuel) => (
+                  <span className="fuel-label">
+                    Fuel Type
+                  </span>
 
-              <tr
-                key={fuel.id}
-                className="border-b border-slate-700"
-              >
+                  <h2>
+                    {fuel.fuel_type}
+                  </h2>
 
-                <td className="p-4">
-                  {fuel.fuel_type}
-                </td>
+                </div>
 
-                <td className="p-4">
+                <div className="fuel-price">
+
                   ₹ {fuel.price}
-                </td>
-                <td className="p-4 flex gap-3">
 
-                {
+                </div>
 
-editingId === fuel.id
+              </div>
 
-?
+              {
 
-<div className="flex gap-2">
+                editingId === fuel.id
 
-  <input
-    type="number"
-    placeholder="New Price"
-    value={newPrice}
-    onChange={(e) =>
-      setNewPrice(e.target.value)
-    }
-    className="p-2 rounded bg-slate-800 w-28"
-  />
+                ?
 
-  <button
-    onClick={() =>
-      updateFuel(
-        fuel.id
-      )
-    }
-    className="bg-green-500 px-3 py-2 rounded"
-  >
-    Save
-  </button>
+                <div className="edit-section">
 
-</div>
+                  <input
+                    type="number"
+                    placeholder="New Price"
+                    value={newPrice}
+                    onChange={(e) =>
+                      setNewPrice(e.target.value)
+                    }
+                    className="fuel-input"
+                  />
 
-:
+                  <button
+                    onClick={() =>
+                      updateFuel(fuel.id)
+                    }
+                    className="save-btn"
+                  >
 
-<button
-  onClick={() => {
+                    Save
 
-    setEditingId(
-      fuel.id
-    );
+                  </button>
 
-    setNewPrice(
-      fuel.price
-    );
-  }}
-  className="bg-blue-500 px-4 py-2 rounded"
->
-  Update
-</button>
+                </div>
 
-}
+                :
 
-                <button
-                  onClick={() =>
-                    deleteFuel(
-                      fuel.id
-                    )
-                  }
-                  className="bg-red-500 px-4 py-2 rounded"
-                >
-                  Delete
-                </button>
+                <div className="fuel-actions">
 
-              </td>
+                  <button
+                    onClick={() => {
 
-              </tr>
+                      setEditingId(
+                        fuel.id
+                      );
 
-            ))}
+                      setNewPrice(
+                        fuel.price
+                      );
+                    }}
+                    className="update-btn"
+                  >
 
-          </tbody>
+                    Update
 
-        </table>
+                  </button>
+
+                  <button
+                    onClick={() =>
+                      deleteFuel(fuel.id)
+                    }
+                    className="delete-btn"
+                  >
+
+                    Delete
+
+                  </button>
+
+                </div>
+              }
+
+            </div>
+
+          ))}
+
+        </div>
 
       </div>
 

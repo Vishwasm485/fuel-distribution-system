@@ -8,13 +8,24 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./view-bookings.css";
+
 export default function DistributorBookingsPage() {
 
   const [bookings, setBookings] =
     useState<any[]>([]);
+
   const distributor = JSON.parse(
     localStorage.getItem("distributor") || "{}"
   );
+
+  const [showCustomerModal,
+  setShowCustomerModal] =
+    useState(false);
+
+  const [selectedCustomer,
+  setSelectedCustomer] =
+    useState<any>(null);
 
   const fetchBookings = async () => {
 
@@ -46,19 +57,18 @@ export default function DistributorBookingsPage() {
 
   }, [distributor.id]);
 
-  const updateStatus = async (
-    id: number,
-    action: string
+  const acceptBooking = async (
+    id: number
   ) => {
 
     try {
 
       await API.put(
-        `/distributor/${action}/${id}`
+        `/distributor/accept-booking/${id}`
       );
 
       toast.success(
-        "Booking Updated"
+        "Booking Accepted"
       );
 
       fetchBookings();
@@ -68,7 +78,59 @@ export default function DistributorBookingsPage() {
     catch{
 
       toast.error(
-        "Update failed"
+        "Accept Failed"
+      );
+    }
+  };
+
+  const rejectBooking = async (
+    id: number
+  ) => {
+
+    try {
+
+      await API.put(
+        `/distributor/reject-booking/${id}`
+      );
+
+      toast.success(
+        "Booking Rejected"
+      );
+
+      fetchBookings();
+
+    }
+
+    catch{
+
+      toast.error(
+        "Reject Failed"
+      );
+    }
+  };
+
+  const markDelivered = async (
+    id: number
+  ) => {
+
+    try {
+
+      await API.put(
+        `/distributor/mark-delivered/${id}`
+      );
+
+      toast.success(
+        "Marked as Delivered"
+      );
+
+      fetchBookings();
+
+    }
+
+    catch{
+
+      toast.error(
+        "Update Failed"
       );
     }
   };
@@ -77,125 +139,360 @@ export default function DistributorBookingsPage() {
 
     <DashboardLayout role="distributor">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Distributor Bookings
-      </h1>
+      <div className="booking-page">
 
+        <div className="booking-header">
 
-      <div className="overflow-auto">
+          <h1>
+            Distributor Bookings
+          </h1>
 
-        <table className="w-full bg-slate-900 rounded-xl overflow-hidden">
+          <p>
+            Manage customer fuel delivery requests.
+          </p>
 
-          <thead className="bg-orange-500">
+        </div>
 
-            <tr>
+        <div className="booking-grid">
 
-              <th className="p-4">
-                Booking ID
-              </th>
+          {bookings.map((booking) => (
 
-              <th className="p-4">
-                Fuel Type
-              </th>
+            <div
+              key={booking.booking_id}
+              className="booking-card"
+            >
 
-              <th className="p-4">
-                Quantity
-              </th>
+              <div className="booking-top">
 
-              <th className="p-4">
-                Price
-              </th>
+                <div>
 
-              <th className="p-4">
-                Status
-              </th>
+                  <span className="booking-label">
+                    Booking ID
+                  </span>
 
-              <th className="p-4">
-                Actions
-              </th>
+                  <h2>
+                    {booking.booking_id}
+                  </h2>
 
-            </tr>
+                </div>
 
-          </thead>
+                <div className="booking-price">
 
-          <tbody>
+                  ₹ {booking.price}
 
-            {bookings.map((booking) => (
+                </div>
 
-              <tr
-                key={booking.id}
-                className="border-b border-slate-700"
+              </div>
+
+              <div className="booking-info-grid">
+
+                <div className="info-box">
+
+                  <span>
+                    Fuel Type
+                  </span>
+
+                  <p>
+                    {booking.fuel_type}
+                  </p>
+
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Quantity
+                  </span>
+
+                  <p>
+                    {booking.quantity}
+                  </p>
+
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Booking Status
+                  </span>
+
+                  <p>
+                    {booking.status}
+                  </p>
+
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Payment
+                  </span>
+
+                  <p
+                    className={
+                      booking.payment_status === "Success"
+                      ?
+                      "green-text"
+                      :
+                      "red-text"
+                    }
+                  >
+
+                    {
+
+                      booking.payment_status === "Success"
+
+                      ?
+
+                      "Paid"
+
+                      :
+
+                      booking.status === "Pending"
+
+                      ?
+
+                      "No Action Yet"
+
+                      :
+
+                      "Unpaid"
+                    }
+
+                  </p>
+
+                </div>
+
+              </div>
+
+              <button
+
+                onClick={() => {
+
+                  setSelectedCustomer({
+
+                    name:
+                      booking.customer_name,
+
+                    phone:
+                      booking.customer_phone,
+
+                    email:
+                      booking.customer_email,
+
+                    address:
+                      booking.delivery_address,
+
+                    pincode:
+                      booking.delivery_pincode
+                  });
+
+                  setShowCustomerModal(true);
+                }}
+
+                className="details-btn"
               >
 
-                <td className="p-4">
-                  {booking.booking_id}
-                </td>
+                View Customer Details
 
-                <td className="p-4">
-                  {booking.fuel_type}
-                </td>
+              </button>
 
-                <td className="p-4">
-                  {booking.quantity}
-                </td>
+              <div className="action-section">
 
-                <td className="p-4">
-                  ₹ {booking.price}
-                </td>
+                {
 
-                <td className="p-4">
-                  {booking.status}
-                </td>
+                  booking.status === "Pending"
 
-                <td className="p-4 flex gap-2">
+                  &&
+
+                  <>
+
+                    <button
+                      onClick={() =>
+                        acceptBooking(booking.id)
+                      }
+                      className="accept-btn"
+                    >
+
+                      Accept
+
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        rejectBooking(booking.id)
+                      }
+                      className="reject-btn"
+                    >
+
+                      Reject
+
+                    </button>
+
+                  </>
+                }
+
+                {
+
+                  booking.status === "Accepted"
+
+                  &&
+                  booking.payment_status === "Success"
+
+                  &&
 
                   <button
                     onClick={() =>
-                      updateStatus(
-                        booking.id,
-                        "accept-booking"
-                      )
+                      markDelivered(booking.id)
                     }
-                    className="bg-green-500 px-3 py-2 rounded"
+                    className="deliver-btn"
                   >
-                    Accept
+
+                    Mark Delivered
+
                   </button>
+                }
 
-                  <button
-                    onClick={() =>
-                      updateStatus(
-                        booking.id,
-                        "reject-booking"
-                      )
-                    }
-                    className="bg-red-500 px-3 py-2 rounded"
-                  >
-                    Reject
-                  </button>
+                {
 
-                  <button
-                    onClick={() =>
-                      updateStatus(
-                        booking.id,
-                        "mark-delivered"
-                      )
-                    }
-                    className="bg-blue-500 px-3 py-2 rounded"
-                  >
+                  booking.status === "Rejected"
+
+                  &&
+
+                  <div className="status-pill rejected-pill">
+
+                    Rejected
+
+                  </div>
+                }
+
+                {
+
+                  booking.status === "Delivered"
+
+                  &&
+
+                  <div className="status-pill delivered-pill">
+
                     Delivered
-                  </button>
 
-                </td>
+                  </div>
+                }
 
-              </tr>
+              </div>
 
-            ))}
+            </div>
 
-          </tbody>
+          ))}
 
-        </table>
+        </div>
 
       </div>
+
+      {
+
+        showCustomerModal
+
+        &&
+
+        selectedCustomer
+
+        &&
+
+        <div className="modal-overlay">
+
+          <div className="customer-modal">
+
+            <h2>
+              Customer Details
+            </h2>
+
+            <div className="modal-fields">
+
+              <div>
+
+                <label>
+                  Customer Name
+                </label>
+
+                <input
+                  readOnly
+                  value={selectedCustomer.name}
+                />
+
+              </div>
+
+              <div>
+
+                <label>
+                  Phone Number
+                </label>
+
+                <input
+                  readOnly
+                  value={selectedCustomer.phone}
+                />
+
+              </div>
+
+              <div>
+
+                <label>
+                  Email
+                </label>
+
+                <input
+                  readOnly
+                  value={selectedCustomer.email}
+                />
+
+              </div>
+
+              <div>
+
+                <label>
+                  Delivery Address
+                </label>
+
+                <textarea
+                  readOnly
+                  value={selectedCustomer.address}
+                />
+
+              </div>
+
+              <div>
+
+                <label>
+                  Pincode
+                </label>
+
+                <input
+                  readOnly
+                  value={selectedCustomer.pincode}
+                />
+
+              </div>
+
+            </div>
+
+            <button
+
+              onClick={() =>
+                setShowCustomerModal(false)
+              }
+
+              className="close-btn"
+            >
+
+              Close
+
+            </button>
+
+          </div>
+
+        </div>
+      }
 
     </DashboardLayout>
   );
