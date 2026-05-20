@@ -2,15 +2,35 @@
 
 import Link from "next/link";
 
+import "./navbar.css";
+
 export default function Navbar() {
+
   return (
-    <nav className="w-full bg-slate-900 shadow-lg px-10 py-5 flex items-center justify-between">
 
-      <h1 className="text-2xl font-bold text-orange-400">
-        Fuel Distribution
-      </h1>
+    <nav className="navbar">
 
-      <div className="flex items-center gap-6">
+      <div className="navbar-logo">
+
+        <div className="logo-box">
+          F
+        </div>
+
+        <div>
+
+          <h1>
+            FuelFlow
+          </h1>
+
+          <p>
+            Smart Distribution
+          </p>
+
+        </div>
+
+      </div>
+
+      <div className="navbar-links">
 
         <Link href="/">
           Home

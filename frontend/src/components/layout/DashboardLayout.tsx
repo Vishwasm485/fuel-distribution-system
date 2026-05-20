@@ -2,27 +2,38 @@
 
 import Sidebar from "@/components/sidebar/Sidebar";
 
+import "./dashboard-layout.css";
+
 type LayoutProps = {
+
   children: React.ReactNode;
+
   role: string;
 };
 
 export default function DashboardLayout({
+
   children,
+
   role,
+
 }: LayoutProps) {
 
   return (
 
-    <div className="flex min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+    <div className="dashboard-layout">
 
       <Sidebar role={role} />
 
-      <div className="flex-1 p-10 overflow-auto">
+      <main className="dashboard-main">
 
-        {children}
+        <div className="dashboard-content">
 
-      </div>
+          {children}
+
+        </div>
+
+      </main>
 
     </div>
   );

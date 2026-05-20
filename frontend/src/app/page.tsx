@@ -1,44 +1,107 @@
 import Navbar from "@/components/navbar/Navbar";
 
+import "./homepage.css";
+
 export default function HomePage() {
 
   return (
 
-    <div className="min-h-screen bg-slate-950">
+    <div className="home-page">
 
       <Navbar />
 
-      <div className="flex flex-col items-center justify-center h-[85vh] text-center px-5">
+      <section className="hero-section">
 
-        <h1 className="text-6xl font-bold mb-6 text-orange-400">
-          Fuel Distribution System
-        </h1>
+        <div className="hero-overlay"></div>
 
-        <p className="text-xl text-gray-300 max-w-2xl leading-8">
-          Smart online fuel booking platform for customers,
-          distributors and administrators with real-time
-          booking and delivery management.
-        </p>
+        <div className="hero-content">
 
-        <div className="flex gap-5 mt-10">
+          <span className="hero-badge">
+            Smart Fuel Delivery Platform
+          </span>
 
-          <a
-            href="/login"
-            className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg font-semibold"
-          >
-            Login
-          </a>
+          <h1 className="hero-title">
 
-          <a
-            href="/register"
-            className="border border-orange-400 px-8 py-3 rounded-lg font-semibold"
-          >
-            Register
-          </a>
+            Fuel Distribution
+            <span>
+              Made Modern
+            </span>
+
+          </h1>
+
+          <p className="hero-description">
+
+            Streamline fuel booking, payments,
+            distributor management, and live
+            delivery tracking through one
+            centralized digital platform.
+
+          </p>
+
+          <div className="hero-buttons">
+
+            <a
+              href="/login"
+              className="primary-btn"
+            >
+              Login
+            </a>
+
+            <a
+              href="/register"
+              className="secondary-btn"
+            >
+              Register
+            </a>
+
+          </div>
 
         </div>
 
-      </div>
+      </section>
+
+      <section className="features-section">
+
+        <div className="feature-card">
+
+          <h2>
+            Smart Booking
+          </h2>
+
+          <p>
+            Book fuel instantly from trusted
+            distributors with real-time status updates.
+          </p>
+
+        </div>
+
+        <div className="feature-card">
+
+          <h2>
+            Secure Payments
+          </h2>
+
+          <p>
+            UPI and Card payment system with
+            QR support and transaction verification.
+          </p>
+
+        </div>
+
+        <div className="feature-card">
+
+          <h2>
+            Live Delivery
+          </h2>
+
+          <p>
+            Track fuel approval, delivery,
+            and payment flow in real time.
+          </p>
+
+        </div>
+
+      </section>
 
     </div>
   );

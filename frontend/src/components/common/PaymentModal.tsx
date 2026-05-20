@@ -1,91 +1,194 @@
 "use client";
 
 import {
-  motion
+
+  motion,
+
+  AnimatePresence
+
 } from "framer-motion";
 
+import "./payment-modal.css";
+
 type Props = {
+
   open: boolean;
+
   success: boolean;
 };
 
 export default function PaymentModal({
-  open,
-  success,
-}: Props) {
 
-  if(!open){
-    return null;
-  }
+  open,
+
+  success,
+
+}: Props) {
 
   return (
 
-    <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+    <AnimatePresence>
 
-      <motion.div
+      {
 
-        initial={{
-          scale: 0.5,
-          opacity: 0,
-        }}
+        open
 
-        animate={{
-          scale: 1,
-          opacity: 1,
-        }}
+        &&
 
-        className="bg-slate-900 p-10 rounded-2xl w-100 text-center"
-      >
+        <div className="payment-overlay">
 
-        {!success ? (
+          <motion.div
 
-          <>
+            initial={{
 
-            <div className="w-20 h-20 border-4 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-6" />
+              scale: 0.7,
 
-            <h1 className="text-3xl font-bold text-orange-400 mb-3">
-              Processing Payment
-            </h1>
+              opacity: 0,
 
-            <p className="text-gray-300">
-              Please wait while we process your payment...
-            </p>
+              y: 40,
+            }}
 
-          </>
+            animate={{
 
-        ) : (
+              scale: 1,
 
-          <>
+              opacity: 1,
 
-            <motion.div
+              y: 0,
+            }}
 
-              initial={{
-                scale: 0,
-              }}
+            exit={{
 
-              animate={{
-                scale: 1,
-              }}
+              scale: 0.8,
 
-              className="text-7xl mb-5"
-            >
-              ✅
-            </motion.div>
+              opacity: 0,
+            }}
 
-            <h1 className="text-3xl font-bold text-green-400 mb-3">
-              Payment Successful
-            </h1>
+            transition={{
 
-            <p className="text-gray-300">
-              Fuel booking confirmed successfully.
-            </p>
+              duration: 0.35,
+            }}
 
-          </>
+            className="payment-modal"
+          >
 
-        )}
+            {
 
-      </motion.div>
+              !success
 
-    </div>
+              ?
+
+              <>
+
+                <div className="processing-wrapper">
+
+                  <div className="payment-spinner"></div>
+
+                  <div className="pulse-ring"></div>
+
+                </div>
+
+                <h1 className="processing-title">
+
+                  Processing Payment
+
+                </h1>
+
+                <p className="processing-text">
+
+                  Securely verifying your transaction.
+                  Please wait a moment...
+
+                </p>
+
+                <div className="processing-bar">
+
+                  <motion.div
+
+                    initial={{
+                      width: 0
+                    }}
+
+                    animate={{
+                      width: "100%"
+                    }}
+
+                    transition={{
+                      duration: 2.8
+                    }}
+
+                    className="processing-fill"
+                  />
+
+                </div>
+
+              </>
+
+              :
+
+              <>
+
+                <motion.div
+
+                  initial={{
+
+                    scale: 0,
+
+                    rotate: -180,
+                  }}
+
+                  animate={{
+
+                    scale: 1,
+
+                    rotate: 0,
+                  }}
+
+                  transition={{
+
+                    type: "spring",
+
+                    stiffness: 180,
+
+                    damping: 12,
+                  }}
+
+                  className="success-icon"
+                >
+
+                  ✓
+
+                </motion.div>
+
+                <h1 className="success-title">
+
+                  Payment Successful
+
+                </h1>
+
+                <p className="success-text">
+
+                  Fuel booking confirmed successfully.
+                  Distributor has been notified.
+
+                </p>
+
+                <div className="success-box">
+
+                  Transaction Completed
+
+                </div>
+
+              </>
+
+            }
+
+          </motion.div>
+
+        </div>
+
+      }
+
+    </AnimatePresence>
   );
 }
