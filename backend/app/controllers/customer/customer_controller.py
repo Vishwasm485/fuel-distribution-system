@@ -25,6 +25,21 @@ def customer_register():
         email=data.get("email")
     ).first()
 
+    if not data.get("name") \
+    or not data.get("email") \
+    or not data.get("phone") \
+    or not data.get("address") \
+    or not data.get("password"):
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "All fields are required"
+
+        }), 400
+
     if email_exists:
         return jsonify({
             "success": False,
@@ -198,72 +213,87 @@ def book_fuel():
     )
 
     if not fuel:
+
         return jsonify({
+
             "success": False,
-            "message": "Fuel not found"
+
+            "message":
+                "Fuel not found"
+
         }), 404
 
-    quantity = float(data.get("quantity"))
+    quantity = float(
+        data.get("quantity")
+    )
 
-    total_price = quantity * float(fuel.price)
+    total_price = (
+        quantity * float(fuel.price)
+    )
 
     booking = Booking(
 
-        booking_id=booking_unique_id,
+        booking_id =
+            booking_unique_id,
 
-        customer_id=data.get("customer_id"),
+        customer_id =
+            data.get("customer_id"),
 
-        distributor_id=data.get("distributor_id"),
+        distributor_id =
+            data.get("distributor_id"),
 
-        fuel_price_id=fuel.id,
+        fuel_price_id =
+            fuel.id,
 
-        booking_date=datetime.now().date(),
+        booking_date =
+            datetime.now().date(),
 
-        fuel_type=fuel.fuel_type,
+        fuel_type =
+            fuel.fuel_type,
 
-        quantity=quantity,
+        quantity =
+            quantity,
 
-        price_per_liter=fuel.price,
+        price_per_liter =
+            fuel.price,
 
-        total_price=total_price,
+        total_price =
+            total_price,
 
-        delivery_pincode=data.get(
-            "delivery_pincode"
-        ),
+        delivery_pincode =
+            data.get(
+                "delivery_pincode"
+            ),
 
-        delivery_address=data.get(
-            "delivery_address"
-        ),
+        delivery_address =
+            data.get(
+                "delivery_address"
+            ),
 
-        landmark=data.get("landmark"),
+        landmark =
+            data.get("landmark"),
 
-        payment_mode=data.get("payment_mode"),
-
-        payment_status="Paid",
-
-        booking_status="Pending"
+        booking_status =
+            "Pending"
     )
 
     db.session.add(booking)
 
     db.session.commit()
 
-    payment = Payment(
-        booking_id=booking.id,
-        payment_mode=data.get("payment_mode"),
-        amount=total_price,
-        payment_status="Success"
-    )
-
-    db.session.add(payment)
-
-    db.session.commit()
-
     return jsonify({
+
         "success": True,
-        "message": "Booking successful",
-        "booking_id": booking.booking_id,
-        "total_price": total_price
+
+        "message":
+            "Booking request sent",
+
+        "booking_id":
+            booking.booking_id,
+
+        "total_price":
+            total_price
+
     }), 201
 # =========================================
 # MY BOOKINGS
@@ -279,20 +309,54 @@ def my_bookings(customer_id):
 
     for booking in bookings:
 
+        payment = Payment.query.filter_by(
+            booking_id=booking.id
+        ).first()
+
         booking_list.append({
-            "booking_id": booking.booking_id,
-            "booking_date": str(booking.booking_date),
-            "fuel_type": booking.fuel_type,
-            "quantity": float(booking.quantity),
-            "price": float(booking.total_price),
-            "delivery_address": booking.delivery_address,
-            "payment_mode": booking.payment_mode,
-            "status": booking.booking_status
+
+            "id":
+                booking.id,
+
+            "booking_id":
+                booking.booking_id,
+
+            "booking_date":
+                str(booking.booking_date),
+
+            "fuel_type":
+                booking.fuel_type,
+
+            "quantity":
+                float(booking.quantity),
+
+            "price":
+                float(booking.total_price),
+
+            "delivery_address":
+                booking.delivery_address,
+
+            "status":
+                booking.booking_status,
+
+            "payment_mode":
+                booking.payment_mode
+                if booking.payment_mode
+                else "Not Paid",
+
+            "payment_status":
+                booking.payment_status
+                if booking.payment_status
+                else "Pending",
         })
 
     return jsonify({
+
         "success": True,
-        "bookings": booking_list
+
+        "bookings":
+            booking_list
+
     }), 200
 # =========================================
 # ADD FEEDBACK
@@ -304,28 +368,25 @@ def add_feedback():
 
     print(data)
 
-    booking_id = data.get("booking_id")
+    customer_id = data.get(
+        "customer_id"
+    )
 
-    customer_id = data.get("customer_id")
+    distributor_id = data.get(
+        "distributor_id"
+    )
 
-    distributor_id = data.get("distributor_id")
+    rating = data.get(
+        "rating"
+    )
 
-    rating = data.get("rating")
-
-    feedback_message = data.get("feedback_message")
+    feedback_message = data.get(
+        "feedback_message"
+    )
 
     # =========================================
     # VALIDATION
     # =========================================
-
-    if not booking_id:
-
-        return jsonify({
-
-            "message":
-                "Booking ID required"
-
-        }), 400
 
     if not distributor_id:
 
@@ -344,18 +405,49 @@ def add_feedback():
                 "Feedback message required"
 
         }), 400
+    
+    if not rating:
 
-    feedback = Feedback(
+        return jsonify({
 
-        booking_id=booking_id,
+            "message":
+                "Rating required"
+
+        }), 400
+
+    existing_feedback = Feedback.query.filter_by(
 
         customer_id=customer_id,
 
-        distributor_id=distributor_id,
+        distributor_id=distributor_id
 
-        rating=rating,
+    ).first()
 
-        feedback_message=feedback_message
+    if existing_feedback:
+
+        return jsonify({
+
+            "message":
+                "Feedback already submitted"
+
+        }), 400
+    # =========================================
+    # CREATE FEEDBACK
+    # =========================================
+
+    feedback = Feedback(
+
+        customer_id =
+            customer_id,
+
+        distributor_id =
+            distributor_id,
+
+        rating =
+            rating,
+
+        feedback_message =
+            feedback_message
     )
 
     db.session.add(feedback)
@@ -366,5 +458,129 @@ def add_feedback():
 
         "message":
             "Feedback added successfully"
+
+    }), 201
+# =========================================
+# MAKE PAYMENT
+# =========================================
+
+def make_payment():
+
+    data = request.get_json()
+
+    booking_id = data.get(
+        "booking_id"
+    )
+
+    payment_mode = data.get(
+        "payment_mode"
+    )
+
+    # =========================================
+    # GET BOOKING FIRST
+    # =========================================
+
+    booking = Booking.query.get(
+        booking_id
+    )
+
+    if not booking:
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Booking not found"
+
+        }), 404
+
+    # =========================================
+    # ONLY ACCEPTED BOOKINGS
+    # =========================================
+
+    if booking.booking_status != "Accepted":
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Booking not accepted yet"
+
+        }), 400
+
+    # =========================================
+    # REJECTED BOOKINGS CANNOT PAY
+    # =========================================
+
+    if booking.booking_status == "Rejected":
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Rejected booking"
+
+        }), 400
+
+    # =========================================
+    # PREVENT DUPLICATE PAYMENT
+    # =========================================
+
+    existing_payment = Payment.query.filter_by(
+        booking_id=booking.id
+    ).first()
+
+    if existing_payment:
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Payment already completed"
+
+        }), 400
+
+    # =========================================
+    # SECURE AMOUNT
+    # =========================================
+
+    amount = booking.total_price
+
+    # =========================================
+    # CREATE PAYMENT
+    # =========================================
+
+    payment = Payment(
+
+        booking_id =
+            booking.id,
+
+        payment_mode =
+            payment_mode,
+
+        amount =
+            amount,
+
+        payment_status =
+            "Success"
+    )
+
+    db.session.add(payment)
+    booking.payment_mode = payment_mode
+
+    booking.payment_status = "Success"
+
+    db.session.commit()
+
+    return jsonify({
+
+        "success": True,
+
+        "message":
+            "Payment Successful"
 
     }), 201

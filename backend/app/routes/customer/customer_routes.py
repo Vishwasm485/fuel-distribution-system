@@ -8,6 +8,7 @@ from app.controllers.customer.customer_controller import (
     distributor_fuel_prices,
     book_fuel,
     my_bookings,
+    make_payment,
     add_feedback
 )
 
@@ -107,3 +108,14 @@ def bookings(customer_id):
 )
 def feedback():
     return add_feedback()
+# =========================================
+# MAKE PAYMENT
+# =========================================
+
+@customer_bp.route(
+    "/make-payment",
+    methods=["POST"]
+)
+def payment():
+
+    return make_payment()

@@ -2,6 +2,7 @@ from flask import Blueprint
 from app.controllers.admin.admin_controller import (
     admin_login,
     add_distributor,
+    get_customers,
     get_distributors,
     update_distributor,
     delete_distributor,
@@ -82,3 +83,15 @@ def feedbacks():
 )
 def dashboard_stats():
     return admin_dashboard_stats()
+
+# =========================================
+# VIEW CUSTOMERS
+# =========================================
+
+@admin_bp.route(
+    "/view-customers",
+    methods=["GET"]
+)
+def customers():
+
+    return get_customers()

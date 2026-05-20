@@ -114,6 +114,44 @@ def get_distributors():
         "distributors": distributor_list
     }), 200
 
+# =========================================
+# VIEW CUSTOMERS
+# =========================================
+
+def get_customers():
+
+    customers = Customer.query.all()
+
+    customer_list = []
+
+    for customer in customers:
+
+        customer_list.append({
+
+            "id":
+                customer.id,
+
+            "name":
+                customer.name,
+
+            "email":
+                customer.email,
+
+            "phone":
+                customer.phone,
+
+            "address":
+                customer.address
+        })
+
+    return jsonify({
+
+        "success": True,
+
+        "customers":
+            customer_list
+
+    }), 200
 
 # =========================================
 # UPDATE DISTRIBUTOR

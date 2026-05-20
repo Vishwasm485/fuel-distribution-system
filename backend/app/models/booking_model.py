@@ -71,14 +71,14 @@ class Booking(db.Model):
     )
 
     payment_mode = db.Column(
-        db.Enum("UPI", "CARD"),
-        nullable=False
+        db.String(50),
+        nullable=True
     )
 
     payment_status = db.Column(
-        db.Enum("Pending", "Paid"),
-        default="Paid"
-    )
+        db.String(50),
+        default="Pending"
+)
 
     booking_status = db.Column(
         db.Enum(

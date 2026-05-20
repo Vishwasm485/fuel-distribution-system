@@ -7,17 +7,14 @@ class Feedback(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    booking_id = db.Column(
-        db.Integer,
-        db.ForeignKey("bookings.id"),
-        unique=True,
-        nullable=False
-    )
-
     customer_id = db.Column(
         db.Integer,
         db.ForeignKey("customers.id"),
         nullable=False
+    )
+    booking_id = db.Column(
+        db.Integer,
+        nullable=True
     )
 
     distributor_id = db.Column(

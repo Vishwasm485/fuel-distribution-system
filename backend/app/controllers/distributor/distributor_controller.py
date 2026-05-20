@@ -4,13 +4,15 @@ from flask_jwt_extended import create_access_token
 
 from app.config.db import db
 
+from app.models.customer.customer_model import Customer
+
 from app.models.distributor.distributor_model import Distributor
 from app.models.fuel_model import FuelPrice
 
 from sqlalchemy import func
 
 from app.models.booking_model import Booking
-
+from app.models.payment_model import Payment
 # =========================================
 # DISTRIBUTOR LOGIN
 # =========================================
@@ -168,33 +170,70 @@ def view_bookings(distributor_id):
     booking_list = []
 
     for booking in bookings:
+        customer = Customer.query.get(
+            booking.customer_id
+        )
+
+        payment = Payment.query.filter_by(
+            booking_id=booking.id
+        ).first()
 
         booking_list.append({
 
-            "id": booking.id,
+            "id":
+                booking.id,
 
-            "booking_id": booking.booking_id,
+            "booking_id":
+                booking.booking_id,
 
-            "fuel_type": booking.fuel_type,
+            "fuel_type":
+                booking.fuel_type,
 
-            "quantity": float(booking.quantity),
+            "quantity":
+                float(booking.quantity),
 
-            "price": float(booking.total_price),
+            "price":
+                float(booking.total_price),
 
-            "delivery_pincode": booking.delivery_pincode,
+            "delivery_pincode":
+                booking.delivery_pincode,
 
-            "delivery_address": booking.delivery_address,
+            "delivery_address":
+                booking.delivery_address,
 
-            "payment_mode": booking.payment_mode,
+            "status":
+                booking.booking_status,
 
-            "status": booking.booking_status,
+            "customer_id":
+                booking.customer_id,
 
-            "customer_id": booking.customer_id
+            "customer_name":
+                customer.name,
+
+            "customer_phone":
+                customer.phone,
+
+            "customer_email":
+                customer.email,
+
+            "payment_status":
+
+                payment.payment_status
+
+                if payment
+
+                else
+
+                "Unpaid"
         })
 
     return jsonify({
+
         "success": True,
-        "bookings": booking_list
+
+        "bookings":
+            booking_list
+
     }), 200
 # =========================================
 # ACCEPT BOOKING
@@ -209,7 +248,17 @@ def accept_booking(id):
             "success": False,
             "message": "Booking not found"
         }), 404
+    if booking.booking_status != "Pending":
 
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Booking already processed"
+
+        }), 400
+    
     booking.booking_status = "Accepted"
 
     db.session.commit()
@@ -227,18 +276,38 @@ def reject_booking(id):
     booking = Booking.query.get(id)
 
     if not booking:
+
         return jsonify({
+
             "success": False,
-            "message": "Booking not found"
+
+            "message":
+                "Booking not found"
+
         }), 404
+
+    if booking.booking_status != "Pending":
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Booking already processed"
+
+        }), 400
 
     booking.booking_status = "Rejected"
 
     db.session.commit()
 
     return jsonify({
+
         "success": True,
-        "message": "Booking rejected"
+
+        "message":
+            "Booking rejected"
+
     }), 200
 # =========================================
 # MARK AS DELIVERED
@@ -249,18 +318,60 @@ def mark_delivered(id):
     booking = Booking.query.get(id)
 
     if not booking:
+
         return jsonify({
+
             "success": False,
-            "message": "Booking not found"
+
+            "message":
+                "Booking not found"
+
         }), 404
+    if booking.booking_status != "Accepted":
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Booking not accepted"
+
+        }), 400
+
+    # =========================================
+    # CHECK PAYMENT
+    # =========================================
+
+    payment = Payment.query.filter_by(
+        booking_id=booking.id
+    ).first()
+
+    if not payment or payment.payment_status != "Success":
+
+        return jsonify({
+
+            "success": False,
+
+            "message":
+                "Payment pending"
+
+        }), 400
+
+    # =========================================
+    # UPDATE STATUS
+    # =========================================
 
     booking.booking_status = "Delivered"
 
     db.session.commit()
 
     return jsonify({
+
         "success": True,
-        "message": "Fuel delivered successfully"
+
+        "message":
+            "Fuel delivered successfully"
+
     }), 200
 # =========================================
 # VIEW REVENUE
