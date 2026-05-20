@@ -40,25 +40,66 @@ Flask Blueprint Architecture
 REST APIs
 Database
 MySQL
-Project Structure
+# Project Structure
+
+```bash
 fuel-distribution-system/
 │
 ├── frontend/
-│   ├── src/
 │   ├── public/
-│   └── package.json
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── admin/
+│   │   │   ├── customer/
+│   │   │   ├── distributor/
+│   │   │   ├── login/
+│   │   │   ├── register/
+│   │   │   ├── globals.css
+│   │   │   └── layout.tsx
+│   │   │
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   ├── layout/
+│   │   │   ├── navbar/
+│   │   │   └── sidebar/
+│   │   │
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── styles/
+│   │   └── utils/
+│   │
+│   ├── package.json
+│   └── tsconfig.json
 │
 ├── backend/
 │   ├── app/
-│   ├── routes/
-│   ├── controllers/
-│   ├── models/
-│   └── run.py
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   │   ├── admin/
+│   │   │   ├── customer/
+│   │   │   └── distributor/
+│   │   │
+│   │   ├── models/
+│   │   │   ├── admin/
+│   │   │   ├── customer/
+│   │   │   └── distributor/
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── admin/
+│   │   │   ├── customer/
+│   │   │   └── distributor/
+│   │   │
+│   │   └── utils/
+│   │
+│   ├── run.py
+│   └── requirements.txt
 │
+├── .gitignore
 └── README.md
+```
 Installation
 Clone Repository
-git clone https://github.com/YOUR_USERNAME/fuel-distribution-system.git
+git clone https://github.com/vishwasm485/fuel-distribution-system.git
 Frontend Setup
 cd frontend
 
