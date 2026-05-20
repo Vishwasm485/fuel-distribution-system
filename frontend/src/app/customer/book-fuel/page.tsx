@@ -16,7 +16,7 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
-import PaymentModal from "@/components/common/PaymentModal";
+import "./book-fuel.css";
 
 export default function BookFuelPage() {
 
@@ -32,12 +32,6 @@ export default function BookFuelPage() {
   const [fuels, setFuels] =
     useState<any[]>([]);
 
-  const [paymentOpen, setPaymentOpen] =
-    useState(false);
-
-  const [paymentSuccess, setPaymentSuccess] =
-    useState(false);
-
   const [formData, setFormData] =
     useState({
       fuel_price_id: "",
@@ -45,12 +39,11 @@ export default function BookFuelPage() {
       delivery_pincode: "",
       delivery_address: "",
       landmark: "",
-      payment_mode: "UPI",
     });
 
   const customer = JSON.parse(
-  localStorage.getItem("customer") || "{}"
-);
+    localStorage.getItem("customer") || "{}"
+  );
 
   const fetchFuels = async () => {
 
@@ -90,14 +83,6 @@ export default function BookFuelPage() {
 
     try {
 
-      setPaymentOpen(true);
-
-      setPaymentSuccess(false);
-
-      await new Promise((resolve) =>
-        setTimeout(resolve, 3000)
-      );
-
       await API.post(
         "/customer/book-fuel",
         {
@@ -117,27 +102,17 @@ export default function BookFuelPage() {
         }
       );
 
-      setPaymentSuccess(true);
-
       toast.success(
-        "Fuel Booking Successful"
+        "Booking Request Sent"
       );
 
-      setTimeout(() => {
-
-        setPaymentOpen(false);
-
-        router.push(
-          "/customer/my-bookings"
-        );
-
-      }, 2000);
+      router.push(
+        "/customer/check-status"
+      );
 
     }
 
     catch(error: any){
-
-      setPaymentOpen(false);
 
       toast.error(
         error.response?.data?.message ||
@@ -148,23 +123,19 @@ export default function BookFuelPage() {
 
   return (
 
-    <>
+    <DashboardLayout role="customer">
 
-      <PaymentModal
-        open={paymentOpen}
-        success={paymentSuccess}
-      />
+      <div className="book-fuel-page">
 
-      <DashboardLayout role="customer">
-
-        <h1 className="text-4xl font-bold text-orange-400 mb-8">
+        <h1 className="book-fuel-title">
           Book Fuel
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-slate-900 p-8 rounded-xl max-w-2xl"
+          className="book-fuel-form"
         >
+
           <select
             value={formData.fuel_price_id}
             onChange={(e) =>
@@ -173,7 +144,7 @@ export default function BookFuelPage() {
                 fuel_price_id: e.target.value,
               })
             }
-            className="w-full p-3 rounded mb-4"
+            className="fuel-input"
           >
 
             <option value="">
@@ -186,9 +157,11 @@ export default function BookFuelPage() {
                 key={fuel.fuel_price_id}
                 value={fuel.fuel_price_id}
               >
+
                 {fuel.fuel_type}
                 {" "}
                 - ₹ {fuel.price}
+
               </option>
 
             ))}
@@ -205,7 +178,7 @@ export default function BookFuelPage() {
                 quantity: e.target.value,
               })
             }
-            className="w-full p-3 rounded mb-4"
+            className="fuel-input"
           />
 
           <input
@@ -219,7 +192,7 @@ export default function BookFuelPage() {
                   e.target.value,
               })
             }
-            className="w-full p-3 rounded mb-4"
+            className="fuel-input"
           />
 
           <textarea
@@ -232,7 +205,7 @@ export default function BookFuelPage() {
                   e.target.value,
               })
             }
-            className="w-full p-3 rounded mb-4 h-32"
+            className="fuel-textarea"
           />
 
           <input
@@ -246,43 +219,22 @@ export default function BookFuelPage() {
                   e.target.value,
               })
             }
-            className="w-full p-3 rounded mb-4"
+            className="fuel-input"
           />
-
-          <select
-            value={formData.payment_mode}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                payment_mode:
-                  e.target.value,
-              })
-            }
-            className="w-full p-3 rounded mb-6"
-          >
-
-            <option value="UPI">
-              UPI
-            </option>
-
-            <option value="Card">
-              Card
-            </option>
-
-          </select>
 
           <button
             type="submit"
-            className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg"
+            className="fuel-submit-btn"
           >
+
             Book Fuel
+
           </button>
 
         </form>
 
-      </DashboardLayout>
+      </div>
 
-    </>
-
+    </DashboardLayout>
   );
 }

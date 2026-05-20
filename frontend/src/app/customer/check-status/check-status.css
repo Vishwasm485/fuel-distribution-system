@@ -1,0 +1,382 @@
+.status-page{
+  width: 100%;
+}
+
+.status-title{
+  font-size: 34px;
+
+  font-weight: 800;
+
+  color: #f97316;
+
+  margin-bottom: 24px;
+}
+
+.status-grid{
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+  gap: 20px;
+}
+
+.status-card{
+  background:
+    rgba(15,23,42,0.7);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 24px;
+
+  padding: 22px;
+}
+
+.booking-title{
+  font-size: 20px;
+
+  font-weight: 700;
+
+  color: #f97316;
+
+  margin-bottom: 18px;
+}
+
+.booking-details{
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.booking-details p{
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  color: #e2e8f0;
+
+  font-size: 14px;
+}
+
+.booking-details span{
+  color: #94a3b8;
+
+  font-weight: 600;
+}
+
+.yellow-status{
+  color: #facc15;
+}
+
+.blue-status{
+  color: #60a5fa;
+}
+
+.red-status{
+  color: #f87171;
+}
+
+.green-status{
+  color: #22c55e;
+}
+
+.yellow-box,
+.red-box,
+.green-box{
+  padding: 14px;
+
+  border-radius: 14px;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+.yellow-box{
+  background:
+    rgba(250,204,21,0.1);
+
+  color: #facc15;
+}
+
+.red-box{
+  background:
+    rgba(248,113,113,0.1);
+
+  color: #f87171;
+}
+
+.green-box{
+  background:
+    rgba(34,197,94,0.1);
+
+  color: #22c55e;
+}
+
+/* =======================================
+MODALS
+======================================= */
+
+.payment-modal-overlay{
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    rgba(0,0,0,0.75);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.payment-modal{
+  width: 100%;
+  max-width: 500px;
+
+  background: #0f172a;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius: 24px;
+
+  padding: 24px;
+}
+
+.payment-modal-title{
+  font-size: 26px;
+
+  font-weight: 700;
+
+  color: #f97316;
+
+  margin-bottom: 22px;
+}
+
+.payment-input{
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  background: #1e293b;
+
+  border:
+    1px solid #334155;
+
+  margin-bottom: 16px;
+
+  color: white;
+}
+
+.payment-btn{
+  border: none;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  font-weight: 700;
+
+  transition: 0.3s;
+}
+
+.green-btn{
+  background: #22c55e;
+
+  color: white;
+}
+
+.red-btn{
+  background: #ef4444;
+
+  color: white;
+}
+
+.payment-btn:hover{
+  transform: translateY(-2px);
+}
+
+.payment-grid{
+  display: grid;
+
+  grid-template-columns:
+    repeat(2,1fr);
+
+  gap: 14px;
+}
+
+.address-box{
+  width: 100%;
+
+  background: #0f172a;
+
+  border:
+    1px solid #334155;
+
+  border-radius: 14px;
+
+  padding: 14px;
+
+  color: #e2e8f0;
+
+  resize: none;
+
+  min-height: 80px;
+
+  overflow-wrap: break-word;
+}
+.pay-now-btn{
+  width: 100%;
+
+  margin-top: 18px;
+
+  background: #f97316;
+
+  border: none;
+
+  padding: 12px;
+
+  border-radius: 14px;
+
+  color: white;
+
+  font-weight: 700;
+}
+
+.payment-overlay{
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(0,0,0,0.75);
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+.payment-modal{
+  width: 100%;
+
+  max-width: 460px;
+
+  background: #0f172a;
+
+  border-radius: 24px;
+
+  padding: 28px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.payment-modal h2{
+  font-size: 28px;
+
+  color: #f97316;
+
+  margin-bottom: 12px;
+}
+
+.payment-amount{
+  color: #22c55e;
+
+  font-size: 22px;
+
+  font-weight: 700;
+
+  margin-bottom: 22px;
+}
+
+.payment-options{
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.payment-options button,
+.upi-section button,
+.card-section button,
+.close-payment-btn{
+  border: none;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  font-weight: 700;
+
+  color: white;
+
+  background: #f97316;
+}
+
+.upi-section,
+.card-section{
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.upi-section input,
+.card-section input,
+.card-section select{
+  padding: 14px;
+
+  border-radius: 14px;
+
+  border: 1px solid #334155;
+
+  background: #1e293b;
+
+  color: white;
+}
+
+.card-row{
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+}
+
+.qr-box{
+  background: white;
+
+  padding: 14px;
+
+  border-radius: 18px;
+
+  display: flex;
+
+  justify-content: center;
+}
+
+.close-payment-btn{
+  width: 100%;
+
+  margin-top: 18px;
+
+  background: #ef4444;
+}

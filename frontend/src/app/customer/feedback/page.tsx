@@ -13,6 +13,8 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./feedback.css";
+
 export default function FeedbackPage() {
 
   const [customer, setCustomer] =
@@ -21,16 +23,15 @@ export default function FeedbackPage() {
   const [distributors, setDistributors] =
     useState<any[]>([]);
 
-  const [filteredDistributors, setFilteredDistributors] =
-    useState<any[]>([]);
-
   const [search, setSearch] =
+    useState("");
+
+  const [selectedDistributor,
+  setSelectedDistributor] =
     useState("");
 
   const [formData, setFormData] =
     useState({
-
-      booking_id: "",
 
       distributor_id: "",
 
@@ -38,10 +39,6 @@ export default function FeedbackPage() {
 
       feedback_message: "",
     });
-
-  // =========================================
-  // LOAD CUSTOMER
-  // =========================================
 
   useEffect(() => {
 
@@ -53,10 +50,6 @@ export default function FeedbackPage() {
 
   }, []);
 
-  // =========================================
-  // FETCH DISTRIBUTORS
-  // =========================================
-
   const fetchDistributors = async () => {
 
     try {
@@ -66,10 +59,6 @@ export default function FeedbackPage() {
       );
 
       setDistributors(
-        response.data.distributors
-      );
-
-      setFilteredDistributors(
         response.data.distributors
       );
 
@@ -89,34 +78,6 @@ export default function FeedbackPage() {
 
   }, []);
 
-  // =========================================
-  // SEARCH FILTER
-  // =========================================
-
-  useEffect(() => {
-
-    const filtered =
-      distributors.filter((distributor) =>
-
-        distributor.name
-          .toLowerCase()
-          .includes(search.toLowerCase())
-
-        ||
-
-        distributor.city
-          .toLowerCase()
-          .includes(search.toLowerCase())
-      );
-
-    setFilteredDistributors(filtered);
-
-  }, [search, distributors]);
-
-  // =========================================
-  // HANDLE CHANGE
-  // =========================================
-
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement |
@@ -134,24 +95,11 @@ export default function FeedbackPage() {
     });
   };
 
-  // =========================================
-  // SUBMIT FEEDBACK
-  // =========================================
-
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
 
     e.preventDefault();
-
-    if(!formData.booking_id){
-
-      toast.error(
-        "Please enter booking ID"
-      );
-
-      return;
-    }
 
     if(!formData.distributor_id){
 
@@ -186,9 +134,6 @@ export default function FeedbackPage() {
         "/customer/add-feedback",
         {
 
-          booking_id:
-            Number(formData.booking_id),
-
           customer_id:
             customer.id,
 
@@ -209,8 +154,6 @@ export default function FeedbackPage() {
 
       setFormData({
 
-        booking_id: "",
-
         distributor_id: "",
 
         rating: "5",
@@ -220,11 +163,11 @@ export default function FeedbackPage() {
 
       setSearch("");
 
+      setSelectedDistributor("");
+
     }
 
-    catch(error: any){
-
-      console.log(error);
+    catch{
 
       toast.error(
         "Failed to submit feedback"
@@ -236,120 +179,184 @@ export default function FeedbackPage() {
 
     <DashboardLayout role="customer">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Customer Feedback
-      </h1>
+      <div className="feedback-page">
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-slate-900 p-8 rounded-xl max-w-xl"
-      >
+        <div className="feedback-header">
 
-        <input
-          type="number"
-          name="booking_id"
-          placeholder="Enter Booking ID"
-          value={formData.booking_id}
-          onChange={handleChange}
-          className="w-full p-3 rounded bg-slate-800 mb-4"
-        />
+          <h1>
+            Customer Feedback
+          </h1>
 
-        <input
-          type="text"
-          placeholder="Search Distributor by Name or City"
-          value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-          className="w-full p-3 rounded bg-slate-800 mb-4"
-        />
+          <p>
+            Share your distributor experience and service quality.
+          </p>
 
-        <select
-          name="distributor_id"
-          value={formData.distributor_id}
-          onChange={handleChange}
-          className="w-full p-3 rounded bg-slate-800 mb-4"
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="feedback-form"
         >
 
-          <option value="">
-            Select Distributor
-          </option>
+          <div className="input-group">
 
-          {filteredDistributors.map((distributor) => (
+            <label>
+              Search Distributor
+            </label>
 
-            <option
-              key={distributor.id}
-              value={distributor.id}
-            >
+            <input
+              type="text"
+              placeholder="Search by distributor name..."
+              value={search}
+              onChange={(e) =>
+                setSearch(e.target.value)
+              }
+              className="feedback-input"
+            />
 
-              {distributor.name}
-              {" - "}
-              {distributor.city}
+          </div>
 
-            </option>
+          <div className="input-group">
 
-          ))}
+            <label>
+              Select Distributor
+            </label>
 
-        </select>
+            <select
+              value={selectedDistributor}
+              onChange={(e) => {
 
-        <div className="flex gap-2 mb-6">
+                setSelectedDistributor(
+                  e.target.value
+                );
 
-          {[1,2,3,4,5].map((star) => (
-
-            <button
-              type="button"
-              key={star}
-              onClick={() =>
                 setFormData({
 
                   ...formData,
 
-                  rating: String(star)
-                })
-              }
+                  distributor_id:
+                    e.target.value
+                });
+              }}
+              className="feedback-input"
             >
 
-              <Star
+              <option value="">
+                Select Distributor
+              </option>
 
-                size={34}
+              {
 
-                className={`transition-all duration-200
+                distributors
 
-                ${
-                  Number(formData.rating) >= star
+                .filter((distributor) =>
 
-                  ?
+                  distributor.name
+                  .toLowerCase()
+                  .includes(
+                    search.toLowerCase()
+                  )
+                )
 
-                  "fill-yellow-400 text-yellow-400 scale-110"
+                .map((distributor) => (
 
-                  :
+                  <option
+                    key={distributor.id}
+                    value={distributor.id}
+                  >
 
-                  "text-gray-500"
-                }`}
-              />
+                    {distributor.name}
+                    {" - "}
+                    {distributor.city}
 
-            </button>
+                  </option>
 
-          ))}
+                ))
+              }
 
-        </div>
+            </select>
 
-        <textarea
-          name="feedback_message"
-          placeholder="Feedback Message"
-          value={formData.feedback_message}
-          onChange={handleChange}
-          className="w-full p-3 rounded mb-6 h-40 bg-slate-800"
-        />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg"
-        >
-          Submit Feedback
-        </button>
+          <div className="input-group">
 
-      </form>
+            <label>
+              Rating
+            </label>
+
+            <div className="star-row">
+
+              {[1,2,3,4,5].map((star) => (
+
+                <button
+                  type="button"
+                  key={star}
+                  className="star-btn"
+                  onClick={() =>
+                    setFormData({
+
+                      ...formData,
+
+                      rating: String(star)
+                    })
+                  }
+                >
+
+                  <Star
+
+                    size={28}
+
+                    className={`
+
+                    ${
+                      Number(formData.rating) >= star
+
+                      ?
+
+                      "fill-yellow-400 text-yellow-400"
+
+                      :
+
+                      "text-slate-500"
+                    }`}
+                  />
+
+                </button>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Feedback Message
+            </label>
+
+            <textarea
+              name="feedback_message"
+              placeholder="Write your feedback..."
+              value={formData.feedback_message}
+              onChange={handleChange}
+              className="feedback-textarea"
+            />
+
+          </div>
+
+          <button
+            type="submit"
+            className="feedback-btn"
+          >
+
+            Submit Feedback
+
+          </button>
+
+        </form>
+
+      </div>
 
     </DashboardLayout>
   );

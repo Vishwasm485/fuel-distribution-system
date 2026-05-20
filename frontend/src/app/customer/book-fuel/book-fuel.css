@@ -1,0 +1,94 @@
+.book-fuel-page{
+  width: 100%;
+}
+
+.book-fuel-title{
+  font-size: 34px;
+
+  font-weight: 800;
+
+  color: #f97316;
+
+  margin-bottom: 24px;
+}
+
+.book-fuel-form{
+  width: 100%;
+  max-width: 620px;
+
+  background:
+    rgba(15,23,42,0.7);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  padding: 26px;
+
+  border-radius: 24px;
+}
+
+.fuel-input{
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  border:
+    1px solid #334155;
+
+  background: #0f172a;
+
+  margin-bottom: 18px;
+
+  color: white;
+
+  font-size: 15px;
+}
+
+.fuel-textarea{
+  width: 100%;
+
+  min-height: 90px;
+
+  resize: none;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  border:
+    1px solid #334155;
+
+  background: #0f172a;
+
+  margin-bottom: 18px;
+
+  color: white;
+
+  font-size: 15px;
+}
+
+.fuel-submit-btn{
+  border: none;
+
+  padding: 14px 24px;
+
+  border-radius: 14px;
+
+  background: #f97316;
+
+  color: white;
+
+  font-weight: 700;
+
+  font-size: 15px;
+
+  transition: 0.3s;
+}
+
+.fuel-submit-btn:hover{
+  background: #ea580c;
+
+  transform: translateY(-2px);
+}

@@ -11,6 +11,8 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./customer-dashboard.css";
+
 export default function CustomerDashboard() {
 
   const [stats, setStats] =
@@ -20,15 +22,16 @@ export default function CustomerDashboard() {
 
       totalFuel: 0,
 
-      latestStatus: "No Orders"
+      pendingDeliveries: 0
     });
 
-const [customer, setCustomer] =
-  useState<any>(null);
+  const [customer, setCustomer] =
+    useState<any>(null);
 
   const fetchDashboardStats = async () => {
 
     if(!customer?.id) return;
+  
 
     try {
 
@@ -52,17 +55,15 @@ const [customer, setCustomer] =
           0
         );
 
-      const latestStatus =
+      const pendingDeliveries =
 
-        bookings.length > 0
+        bookings.filter(
 
-        ?
+          (booking: any) =>
 
-        bookings[0].status
+            booking.status === "Accepted"
 
-        :
-
-        "No Orders";
+        ).length;
 
       setStats({
 
@@ -71,7 +72,7 @@ const [customer, setCustomer] =
 
         totalFuel,
 
-        latestStatus
+        pendingDeliveries
       });
 
     }
@@ -83,68 +84,73 @@ const [customer, setCustomer] =
       );
     }
   };
-useEffect(() => {
 
-  const storedCustomer = JSON.parse(
-    localStorage.getItem("customer") || "{}"
-  );
+  useEffect(() => {
 
-  setCustomer(storedCustomer);
+    const storedCustomer = JSON.parse(
+      localStorage.getItem("customer") || "{}"
+    );
 
-}, []);
+    setCustomer(storedCustomer);
 
-useEffect(() => {
+  }, []);
 
-  if(customer){
+  useEffect(() => {
 
-    fetchDashboardStats();
-  }
+    if(customer){
 
-}, [customer]);
+      fetchDashboardStats();
+    }
+
+  }, [customer]);
 
   return (
 
     <DashboardLayout role="customer">
 
-      <h1 className="text-5xl font-bold text-orange-400 mb-10">
-        Customer Dashboard
-      </h1>
+      <div className="customer-dashboard">
 
-      <div className="grid grid-cols-3 gap-6">
+        <h1 className="customer-dashboard-title">
+          Customer Dashboard
+        </h1>
 
-        <div className="bg-slate-900 p-8 rounded-2xl shadow-lg">
+        <div className="dashboard-stats-grid">
 
-          <h2 className="text-xl text-gray-300 mb-4">
-            My Bookings
-          </h2>
+          <div className="dashboard-card">
 
-          <p className="text-5xl font-bold text-orange-400">
-            {stats.totalBookings}
-          </p>
+            <p className="dashboard-card-label">
+              My Bookings
+            </p>
 
-        </div>
+            <h2 className="dashboard-card-value">
+              {stats.totalBookings}
+            </h2>
 
-        <div className="bg-slate-900 p-8 rounded-2xl shadow-lg">
+          </div>
 
-          <h2 className="text-xl text-gray-300 mb-4">
-            Fuel Orders
-          </h2>
+          <div className="dashboard-card">
 
-          <p className="text-5xl font-bold text-orange-400">
-            {stats.totalFuel}
-          </p>
+            <p className="dashboard-card-label">
+              Fuel Orders
+            </p>
 
-        </div>
+            <h2 className="dashboard-card-value">
+              {stats.totalFuel}
+            </h2>
 
-        <div className="bg-slate-900 p-8 rounded-2xl shadow-lg">
+          </div>
 
-          <h2 className="text-xl text-gray-300 mb-4">
-            Booking Status
-          </h2>
+          <div className="dashboard-card">
 
-          <p className="text-3xl font-bold text-green-400">
-            {stats.latestStatus}
-          </p>
+            <p className="dashboard-card-label">
+              Pending Deliveries
+            </p>
+
+            <h2 className="dashboard-card-success">
+              {stats.pendingDeliveries}
+            </h2>
+
+          </div>
 
         </div>
 

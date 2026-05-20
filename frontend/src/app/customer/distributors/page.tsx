@@ -10,6 +10,8 @@ import Link from "next/link";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./distributors.css";
+
 export default function CustomerDistributorsPage() {
 
   const [distributors, setDistributors] =
@@ -62,63 +64,132 @@ export default function CustomerDistributorsPage() {
 
     <DashboardLayout role="customer">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Fuel Distributors
-      </h1>
+      <div className="distributor-page">
 
-      <input
-        type="text"
-        placeholder="Search by city..."
-        value={search}
-        onChange={(e) =>
-          setSearch(e.target.value)
-        }
-        className="p-3 rounded mb-8 w-87.5"
-      />
+        <div className="page-header">
 
-      <div className="grid grid-cols-3 gap-6">
+          <div>
 
-        {distributors.map((item) => (
+            <h1 className="page-title">
+              Fuel Distributors
+            </h1>
 
-          <div
-            key={item.id}
-            className="bg-slate-900 p-6 rounded-xl"
-          >
-
-            <h2 className="text-2xl font-bold text-orange-400 mb-4">
-              {item.name}
-            </h2>
-
-            <p className="mb-2">
-              Email: {item.email}
+            <p className="page-subtitle">
+              Find trusted fuel distributors near your location.
             </p>
-
-            <p className="mb-2">
-              Phone: {item.phone}
-            </p>
-
-            <p className="mb-2">
-              City: {item.city}
-            </p>
-
-            <p className="mb-2">
-              Pincode: {item.pincode}
-            </p>
-
-            <p className="mb-5">
-              Address: {item.address}
-            </p>
-
-            <Link
-              href={`/customer/book-fuel?distributor_id=${item.id}`}
-              className="bg-orange-500 hover:bg-orange-600 px-5 py-3 rounded-lg inline-block"
-            >
-              Book Fuel
-            </Link>
 
           </div>
 
-        ))}
+          <input
+            type="text"
+            placeholder="Search by city..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            className="search-input"
+          />
+
+        </div>
+
+        <div className="distributor-grid">
+
+          {distributors.map((item) => (
+
+            <div
+              key={item.id}
+              className="distributor-card"
+            >
+
+              <div className="card-top">
+
+                <div className="distributor-logo">
+
+                  {item.name.charAt(0)}
+
+                </div>
+
+                <div>
+
+                  <h2 className="distributor-name">
+                    {item.name}
+                  </h2>
+
+                  <p className="distributor-id">
+                    Distributor ID:
+                    {" "}
+                    {item.id}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="details-box">
+
+                <div className="detail-item">
+
+                  <span>Email</span>
+
+                  <p>{item.email}</p>
+
+                </div>
+
+                <div className="detail-item">
+
+                  <span>Phone</span>
+
+                  <p>{item.phone}</p>
+
+                </div>
+
+              </div>
+
+              <div className="details-grid">
+
+                <div className="mini-box">
+
+                  <span>City</span>
+
+                  <p>{item.city}</p>
+
+                </div>
+
+                <div className="mini-box">
+
+                  <span>Pincode</span>
+
+                  <p>{item.pincode}</p>
+
+                </div>
+
+              </div>
+
+              <div className="address-box">
+
+                <span>Address</span>
+
+                <textarea
+                  value={item.address}
+                  readOnly
+                />
+
+              </div>
+
+              <Link
+                href={`/customer/book-fuel?distributor_id=${item.id}`}
+                className="book-btn"
+              >
+
+                Book Fuel
+
+              </Link>
+
+            </div>
+
+          ))}
+
+        </div>
 
       </div>
 

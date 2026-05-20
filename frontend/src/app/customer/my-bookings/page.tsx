@@ -4,21 +4,22 @@ import {
   useState,
   useEffect
 } from "react";
+
 import toast from "react-hot-toast";
 
 import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
-export default function MyBookingsPage() {
+import "./my-bookings.css";
 
+export default function MyBookingsPage() {
 
   const [bookings, setBookings] =
     useState<any[]>([]);
 
-  const customer = JSON.parse(
-    localStorage.getItem("customer") || "{}"
-  );
+  const [customer, setCustomer] =
+    useState<any>(null);
 
   const fetchBookings = async () => {
 
@@ -43,63 +44,176 @@ export default function MyBookingsPage() {
   };
   useEffect(() => {
 
-  if(customer.id){
-    fetchBookings();
-  }
+  const storedCustomer = JSON.parse(
+    localStorage.getItem("customer") || "{}"
+  );
+
+  setCustomer(storedCustomer);
 
 }, []);
+
+  useEffect(() => {
+
+    if(customer?.id){
+      fetchBookings();
+    }
+
+  }, [customer?.id]);
+  
 
   return (
 
     <DashboardLayout role="customer">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        My Bookings
-      </h1>
+      <div className="bookings-page">
 
+        <div className="bookings-header">
 
-      <div className="grid grid-cols-2 gap-6">
+          <h1>
+            My Bookings
+          </h1>
 
-        {bookings.map((booking) => (
+          <p>
+            Track all your fuel orders and delivery details.
+          </p>
 
-          <div
-            key={booking.booking_id}
-            className="bg-slate-900 p-6 rounded-xl"
-          >
+        </div>
 
-            <h2 className="text-2xl font-bold text-orange-400 mb-4">
-              {booking.booking_id}
-            </h2>
+        <div className="bookings-grid">
 
-            <p className="mb-2">
-              Fuel: {booking.fuel_type}
-            </p>
+          {bookings.map((booking) => (
 
-            <p className="mb-2">
-              Quantity: {booking.quantity}
-            </p>
+            <div
+              key={booking.booking_id}
+              className="booking-card"
+            >
 
-            <p className="mb-2">
-              Price: ₹ {booking.price}
-            </p>
+              <div className="booking-top">
 
-            <p className="mb-2">
-              Payment: {booking.payment_mode}
-            </p>
+                <div>
 
-            <p className="mb-2">
-              Status: {booking.status}
-            </p>
+                  <h2>
+                    {booking.booking_id}
+                  </h2>
 
-            <p>
-              Address:
-              {" "}
-              {booking.delivery_address}
-            </p>
+                  <p>
+                    Fuel Booking
+                  </p>
 
-          </div>
+                </div>
 
-        ))}
+                <div
+                  className={`
+
+                    booking-status
+
+                    ${
+
+                      booking.status === "Pending"
+
+                      ?
+
+                      "pending"
+
+                      :
+
+                      booking.status === "Accepted"
+
+                      ?
+
+                      "accepted"
+
+                      :
+
+                      booking.status === "Delivered"
+
+                      ?
+
+                      "delivered"
+
+                      :
+
+                      "rejected"
+                    }
+                  `}
+                >
+
+                  {booking.status}
+
+                </div>
+
+              </div>
+
+              <div className="booking-details">
+
+                <div className="detail-box">
+
+                  <span>
+                    Fuel Type
+                  </span>
+
+                  <p>
+                    {booking.fuel_type}
+                  </p>
+
+                </div>
+
+                <div className="detail-box">
+
+                  <span>
+                    Quantity
+                  </span>
+
+                  <p>
+                    {booking.quantity} L
+                  </p>
+
+                </div>
+
+                <div className="detail-box">
+
+                  <span>
+                    Total Price
+                  </span>
+
+                  <p>
+                    ₹ {booking.price}
+                  </p>
+
+                </div>
+
+                <div className="detail-box">
+
+                  <span>
+                    Payment Mode
+                  </span>
+
+                  <p>
+                    {booking.payment_mode || "Not Paid"}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="address-section">
+
+                <span>
+                  Delivery Address
+                </span>
+
+                <textarea
+                  readOnly
+                  value={booking.delivery_address}
+                />
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
 
       </div>
 
