@@ -1,8 +1,11 @@
 "use client";
 
 import {
+
   useEffect,
+
   useState
+
 } from "react";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
@@ -10,6 +13,8 @@ import DashboardLayout from "@/components/layout/DashboardLayout";
 import useAuth from "@/hooks/useAuth";
 
 import API from "@/services/api";
+
+import "./admin-dashboard.css";
 
 export default function AdminDashboard() {
 
@@ -51,52 +56,100 @@ export default function AdminDashboard() {
   }, []);
 
   if(loading){
-    return <h1>Loading...</h1>;
+
+    return (
+
+      <div className="dashboard-loading">
+
+        Loading Dashboard...
+
+      </div>
+    );
   }
 
   return (
 
     <DashboardLayout role="admin">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Admin Dashboard
-      </h1>
+      <div className="admin-dashboard">
 
-      <div className="grid grid-cols-3 gap-6">
+        <div className="dashboard-header">
 
-        <div className="bg-slate-900 p-8 rounded-xl shadow-lg">
+          <div>
 
-          <h2 className="text-2xl mb-3">
-            Total Distributors
-          </h2>
+            <h1>
+              Admin Dashboard
+            </h1>
 
-          <p className="text-5xl font-bold text-orange-400">
-            {stats.total_distributors}
-          </p>
+            <p>
+              Monitor platform activity and distributor operations.
+            </p>
 
-        </div>
-
-        <div className="bg-slate-900 p-8 rounded-xl shadow-lg">
-
-          <h2 className="text-2xl mb-3">
-            Total Customers
-          </h2>
-
-          <p className="text-5xl font-bold text-orange-400">
-            {stats.total_customers}
-          </p>
+          </div>
 
         </div>
 
-        <div className="bg-slate-900 p-8 rounded-xl shadow-lg">
+        <div className="stats-grid">
 
-          <h2 className="text-2xl mb-3">
-            Total Bookings
-          </h2>
+          <div className="stat-card">
 
-          <p className="text-5xl font-bold text-orange-400">
-            {stats.total_bookings}
-          </p>
+            <div className="stat-top">
+
+              <span>
+                Total Distributors
+              </span>
+
+              <div className="stat-icon orange-glow">
+                D
+              </div>
+
+            </div>
+
+            <h2>
+              {stats.total_distributors}
+            </h2>
+
+          </div>
+
+          <div className="stat-card">
+
+            <div className="stat-top">
+
+              <span>
+                Total Customers
+              </span>
+
+              <div className="stat-icon cyan-glow">
+                C
+              </div>
+
+            </div>
+
+            <h2>
+              {stats.total_customers}
+            </h2>
+
+          </div>
+
+          <div className="stat-card">
+
+            <div className="stat-top">
+
+              <span>
+                Total Bookings
+              </span>
+
+              <div className="stat-icon green-glow">
+                B
+              </div>
+
+            </div>
+
+            <h2>
+              {stats.total_bookings}
+            </h2>
+
+          </div>
 
         </div>
 

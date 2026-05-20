@@ -1,8 +1,11 @@
 "use client";
 
 import {
+
   useEffect,
+
   useState
+
 } from "react";
 
 import toast from "react-hot-toast";
@@ -10,6 +13,8 @@ import toast from "react-hot-toast";
 import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
+
+import "./customer-feedback.css";
 
 export default function CustomerFeedbackPage() {
 
@@ -48,46 +53,64 @@ export default function CustomerFeedbackPage() {
 
     <DashboardLayout role="admin">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Customer Feedbacks
-      </h1>
+      <div className="feedback-page">
 
-      <div className="grid grid-cols-2 gap-6">
+        <div className="feedback-header">
 
-        {feedbacks.map((item) => (
+          <h1>
+            Customer Feedbacks
+          </h1>
 
-          <div
-            key={item.id}
-            className="bg-slate-900 p-6 rounded-xl border border-slate-800"
-          >
+          <p>
+            Monitor customer reviews and distributor service quality.
+          </p>
 
-            <h2 className="text-2xl font-bold text-orange-400 mb-3">
-              Customer #{item.customer_id}
-            </h2>
+        </div>
 
-            <p className="mb-2 text-gray-300">
-              Distributor ID:
-              {" "}
-              {item.distributor_id}
-            </p>
+        <div className="feedback-grid">
 
-            <p className="mb-2 text-gray-300">
-              Booking ID:
-              {" "}
-              {item.booking_id}
-            </p>
+          {feedbacks.map((item) => (
 
-            <p className="mb-4 text-yellow-400 text-xl">
-              {"⭐".repeat(item.rating)}
-            </p>
+            <div
+              key={item.id}
+              className="feedback-card"
+            >
 
-            <div className="bg-slate-800 p-4 rounded-lg text-gray-200">
-              {item.feedback_message}
+              <div className="feedback-top">
+
+                <div>
+
+                  <h2>
+                    Customer #{item.customer_id}
+                  </h2>
+
+                  <p>
+                    Distributor ID:
+                    {" "}
+                    {item.distributor_id}
+                  </p>
+
+                </div>
+
+                <div className="rating-box">
+
+                  {"⭐".repeat(item.rating)}
+
+                </div>
+
+              </div>
+
+              <div className="feedback-message">
+
+                {item.feedback_message}
+
+              </div>
+
             </div>
 
-          </div>
+          ))}
 
-        ))}
+        </div>
 
       </div>
 

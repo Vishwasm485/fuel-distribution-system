@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+
+  useEffect,
+
+  useState
+
+} from "react";
 
 import toast from "react-hot-toast";
 
 import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
+
+import "./view-distributors.css";
 
 export default function ViewDistributorsPage() {
 
@@ -71,78 +79,138 @@ export default function ViewDistributorsPage() {
 
     <DashboardLayout role="admin">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        View Distributors
-      </h1>
+      <div className="distributors-page">
 
-      <div className="overflow-auto">
+        <div className="distributors-header">
 
-        <table className="w-full bg-slate-900 rounded-xl overflow-hidden">
+          <h1>
+            View Distributors
+          </h1>
 
-          <thead className="bg-orange-500">
+          <p>
+            Manage registered fuel distributors across the platform.
+          </p>
 
-            <tr>
+        </div>
 
-              <th className="p-4">Name</th>
-              <th className="p-4">Email</th>
-              <th className="p-4">Phone</th>
-              <th className="p-4">City</th>
-              <th className="p-4">Pincode</th>
-              <th className="p-4">Actions</th>
+        <div className="distributors-grid">
 
-            </tr>
+          {distributors.map((item) => (
 
-          </thead>
+            <div
+              key={item.id}
+              className="distributor-card"
+            >
 
-          <tbody>
+              <div className="distributor-top">
 
-            {distributors.map((item) => (
+                <div className="distributor-avatar">
 
-              <tr
-                key={item.id}
-                className="border-b border-slate-700"
+                  {item.name?.charAt(0)}
+
+                </div>
+
+                <div>
+
+                  <h2>
+                    {item.name}
+                  </h2>
+
+                  <p>
+                    Distributor ID:
+                    {" "}
+                    {item.id}
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div className="distributor-info">
+
+                <div className="info-box">
+
+                  <span>
+                    Email
+                  </span>
+
+                  <p>
+                    {item.email}
+                  </p>
+
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Phone
+                  </span>
+
+                  <p>
+                    {item.phone}
+                  </p>
+
+                </div>
+
+                <div className="info-row">
+
+                  <div className="info-box">
+
+                    <span>
+                      City
+                    </span>
+
+                    <p>
+                      {item.city}
+                    </p>
+
+                  </div>
+
+                  <div className="info-box">
+
+                    <span>
+                      Pincode
+                    </span>
+
+                    <p>
+                      {item.pincode}
+                    </p>
+
+                  </div>
+
+                </div>
+
+                <div className="info-box">
+
+                  <span>
+                    Address
+                  </span>
+
+                  <textarea
+                    readOnly
+                    value={item.address}
+                  />
+
+                </div>
+
+              </div>
+
+              <button
+                onClick={() =>
+                  handleDelete(item.id)
+                }
+                className="delete-btn"
               >
 
-                <td className="p-4">
-                  {item.name}
-                </td>
+                Delete Distributor
 
-                <td className="p-4">
-                  {item.email}
-                </td>
+              </button>
 
-                <td className="p-4">
-                  {item.phone}
-                </td>
+            </div>
 
-                <td className="p-4">
-                  {item.city}
-                </td>
+          ))}
 
-                <td className="p-4">
-                  {item.pincode}
-                </td>
-
-                <td className="p-4">
-
-                  <button
-                    onClick={() =>
-                      handleDelete(item.id)
-                    }
-                    className="bg-red-500 px-4 py-2 rounded"
-                  >
-                    Delete
-                  </button>
-
-                </td>
-
-              </tr>
-
-            ))}
-
-          </tbody>
-
-        </table>
+        </div>
 
       </div>
 

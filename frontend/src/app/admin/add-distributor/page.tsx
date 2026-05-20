@@ -8,25 +8,38 @@ import API from "@/services/api";
 
 import DashboardLayout from "@/components/layout/DashboardLayout";
 
+import "./add-distributor.css";
+
 export default function AddDistributorPage() {
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    city: "",
-    pincode: "",
-    address: "",
-    password: "",
-  });
+  const [formData, setFormData] =
+    useState({
+
+      name: "",
+
+      email: "",
+
+      phone: "",
+
+      city: "",
+
+      pincode: "",
+
+      address: "",
+
+      password: "",
+    });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
 
     setFormData({
+
       ...formData,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value,
     });
   };
 
@@ -39,7 +52,9 @@ export default function AddDistributorPage() {
     try {
 
       await API.post(
+
         "/admin/add-distributor",
+
         formData
       );
 
@@ -48,12 +63,19 @@ export default function AddDistributorPage() {
       );
 
       setFormData({
+
         name: "",
+
         email: "",
+
         phone: "",
+
         city: "",
+
         pincode: "",
+
         address: "",
+
         password: "",
       });
 
@@ -62,7 +84,9 @@ export default function AddDistributorPage() {
     catch(error: any){
 
       toast.error(
+
         error.response?.data?.message ||
+
         "Something went wrong"
       );
     }
@@ -72,94 +96,160 @@ export default function AddDistributorPage() {
 
     <DashboardLayout role="admin">
 
-      <h1 className="text-4xl font-bold text-orange-400 mb-8">
-        Add Distributor
-      </h1>
+      <div className="add-distributor-page">
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-slate-900 p-8 rounded-xl max-w-2xl"
-      >
+        <div className="page-header">
 
-        <div className="grid grid-cols-2 gap-5">
+          <h1>
+            Add Distributor
+          </h1>
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={formData.name}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
-
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={formData.email}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
-
-          <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
-
-          <input
-            type="text"
-            name="city"
-            placeholder="City"
-            value={formData.city}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
-
-          <input
-            type="text"
-            name="pincode"
-            placeholder="Pincode"
-            value={formData.pincode}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
-
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            className="p-3 rounded"
-          />
+          <p>
+            Register and manage new fuel distributors.
+          </p>
 
         </div>
 
-        <textarea
-          name="address"
-          placeholder="Address"
-          value={formData.address}
-          onChange={(e) =>
-            setFormData({
-              ...formData,
-              address: e.target.value,
-            })
-          }
-          className="w-full p-3 rounded mt-5 h-32"
-        />
-
-        <button
-          type="submit"
-          className="bg-orange-500 hover:bg-orange-600 px-8 py-3 rounded-lg mt-5"
+        <form
+          onSubmit={handleSubmit}
+          className="distributor-form"
         >
-          Add Distributor
-        </button>
 
-      </form>
+          <div className="form-grid">
+
+            <div className="input-group">
+
+              <label>
+                Distributor Name
+              </label>
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Enter distributor name"
+                value={formData.name}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label>
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Enter email"
+                value={formData.email}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label>
+                Phone Number
+              </label>
+
+              <input
+                type="text"
+                name="phone"
+                placeholder="Enter phone number"
+                value={formData.phone}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label>
+                City
+              </label>
+
+              <input
+                type="text"
+                name="city"
+                placeholder="Enter city"
+                value={formData.city}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label>
+                Pincode
+              </label>
+
+              <input
+                type="text"
+                name="pincode"
+                placeholder="Enter pincode"
+                value={formData.pincode}
+                onChange={handleChange}
+              />
+
+            </div>
+
+            <div className="input-group">
+
+              <label>
+                Password
+              </label>
+
+              <input
+                type="password"
+                name="password"
+                placeholder="Create password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+
+            </div>
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Address
+            </label>
+
+            <textarea
+              name="address"
+              placeholder="Enter distributor address"
+              value={formData.address}
+              onChange={(e) =>
+                setFormData({
+
+                  ...formData,
+
+                  address:
+                    e.target.value,
+                })
+              }
+            />
+
+          </div>
+
+          <button
+            type="submit"
+            className="submit-btn"
+          >
+
+            Add Distributor
+
+          </button>
+
+        </form>
+
+      </div>
 
     </DashboardLayout>
   );
