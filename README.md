@@ -1,45 +1,77 @@
-Fuel Distribution System
+# Fuel Distribution System
 
-A full-stack Fuel Distribution Management System built using Next.js, TypeScript, Flask, and MySQL.
-The platform allows customers to book fuel online, distributors to manage fuel pricing and bookings, and administrators to monitor the entire system through dedicated dashboards.
+A full-stack Fuel Distribution Management System built using **Next.js**, **TypeScript**, **Flask**, and **MySQL**.
 
-Features
-Customer Module
-Customer Registration & Login
-Search Fuel Distributors
-Book Fuel Online
-Payment System Integration
-Booking Status Tracking
-View Booking History
-Submit Feedback & Ratings
-Distributor Module
-Distributor Login
-Add Fuel Prices
-Update/Delete Fuel Prices
-Manage Customer Bookings
-Accept / Reject Deliveries
-Revenue Management Dashboard
-Admin Module
-Admin Dashboard
-Add & Manage Distributors
-View Customers
-Monitor Feedback
-Platform Statistics
-Tech Stack
-Frontend
-Next.js 16
-TypeScript
-CSS Modules / Custom CSS
-React Hot Toast
-Framer Motion
-Lucide React
-Backend
-Flask
-SQLAlchemy
-Flask Blueprint Architecture
-REST APIs
-Database
-MySQL
+This platform allows customers to book fuel online, distributors to manage fuel pricing and delivery operations, and administrators to monitor the entire system through dedicated dashboards.
+
+---
+
+# Features
+
+## Customer Module
+
+- Customer Registration & Login
+- Search Fuel Distributors
+- Book Fuel Online
+- Fuel Booking Status Tracking
+- Payment System Integration
+- View Booking History
+- Submit Feedback & Ratings
+
+---
+
+## Distributor Module
+
+- Distributor Login
+- Add Fuel Prices
+- Update Fuel Prices
+- Delete Fuel Prices
+- Manage Customer Bookings
+- Accept / Reject Orders
+- Delivery Management
+- Revenue Dashboard
+
+---
+
+## Admin Module
+
+- Admin Dashboard
+- Add New Distributors
+- Manage Distributors
+- View Customers
+- Monitor Feedbacks
+- System Statistics
+
+---
+
+# Tech Stack
+
+## Frontend
+
+- Next.js 16
+- TypeScript
+- Custom CSS
+- React Hot Toast
+- Framer Motion
+- Lucide React
+
+---
+
+## Backend
+
+- Flask
+- SQLAlchemy
+- REST APIs
+- Flask Blueprints
+
+---
+
+## Database
+
+- MySQL
+
+---
+
 # Project Structure
 
 ```bash
@@ -97,66 +129,126 @@ fuel-distribution-system/
 ├── .gitignore
 └── README.md
 ```
-Installation
-Clone Repository
-git clone https://github.com/vishwasm485/fuel-distribution-system.git
-Frontend Setup
+
+---
+
+# Installation
+
+## Clone Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/fuel-distribution-system.git
+```
+
+---
+
+# Frontend Setup
+
+```bash
 cd frontend
 
 npm install
 
 npm run dev
+```
 
-Frontend runs on:
+Frontend will run on:
 
+```bash
 http://localhost:3000
-Backend Setup
+```
+
+---
+
+# Backend Setup
+
+```bash
 cd backend
 
 pip install -r requirements.txt
 
-Run Flask Server:
-
 python run.py
+```
 
-Backend runs on:
+Backend will run on:
 
+```bash
 http://127.0.0.1:5000
-Environment Variables
+```
 
-Create .env files if needed.
+---
+
+# Environment Variables
+
+Create `.env` file if required.
 
 Example:
 
+```env
 DATABASE_URL=mysql://username:password@localhost/fuel_db
 SECRET_KEY=your_secret_key
-Main Functionalities
-Secure Authentication
-Role Based Access
-Fuel Booking System
-Payment Handling
-Distributor Management
-Booking Tracking
-Revenue Monitoring
-Feedback Management
-UI Improvements
-Responsive Dashboards
-Separate Modular CSS Files
-Optimized Card Layouts
-Professional Sidebar Navigation
-Interactive Status Components
-Payment Modal UI
-Future Enhancements
-Real Payment Gateway Integration
-Email Notifications
-Fuel Delivery Tracking
-Analytics Dashboard
-JWT Authentication
-Mobile Responsive Enhancements
-Author
+```
 
-Developed by Vishwas M
+---
 
-License
+# Main Functionalities
+
+- Secure Authentication
+- Role-Based Dashboards
+- Fuel Booking System
+- Fuel Price Management
+- Payment Handling
+- Delivery Status Tracking
+- Revenue Monitoring
+- Feedback System
+- Responsive UI
+
+---
+
+# UI Improvements
+
+- Modular CSS Architecture
+- Responsive Dashboard Layouts
+- Optimized Card Designs
+- Interactive Sidebar Navigation
+- Payment Modal Interface
+- Booking Status Indicators
+- Modern Dark Theme
+
+---
+
+# Future Enhancements
+
+- Real Payment Gateway Integration
+- Email Notifications
+- Fuel Delivery Tracking
+- JWT Authentication
+- Mobile App Version
+- Analytics Dashboard
+
+---
+
+# Screenshots
+
+Add project screenshots here.
+
+Example:
+
+```markdown
+![Homepage](./screenshots/homepage.png)
+```
+
+---
+
+# Author
+
+## Vishwas M
+
+MCA Student  
+Full Stack Developer
+
+---
+
+# License
 
 This project is developed for educational and portfolio purposes.
