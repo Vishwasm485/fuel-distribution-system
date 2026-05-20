@@ -1,30 +1,40 @@
 "use client";
 
 import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 
 import API from "@/services/api";
 
 import toast from "react-hot-toast";
 
+import "./login.css";
+
 export default function LoginPage() {
 
   const router = useRouter();
 
-  const [role, setRole] = useState("customer");
+  const [role, setRole] =
+    useState("customer");
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] =
+    useState({
+
+      email: "",
+
+      password: "",
+    });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
 
     setFormData({
+
       ...formData,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value,
     });
   };
 
@@ -37,7 +47,9 @@ export default function LoginPage() {
     try {
 
       const response = await API.post(
+
         `/${role}/login`,
+
         formData
       );
 
@@ -54,7 +66,9 @@ export default function LoginPage() {
       if(role === "customer"){
 
         localStorage.setItem(
+
           "customer",
+
           JSON.stringify(
             response.data.customer
           )
@@ -64,25 +78,40 @@ export default function LoginPage() {
       if(role === "distributor"){
 
         localStorage.setItem(
+
           "distributor",
+
           JSON.stringify(
             response.data.distributor
           )
         );
       }
 
-      toast.success("Login Successful");
+      toast.success(
+        "Login Successful"
+      );
 
       if(role === "admin"){
-        router.push("/admin/dashboard");
+
+        router.push(
+          "/admin/dashboard"
+        );
       }
 
-      else if(role === "distributor"){
-        router.push("/distributor/dashboard");
+      else if(
+        role === "distributor"
+      ){
+
+        router.push(
+          "/distributor/dashboard"
+        );
       }
 
       else{
-        router.push("/customer/dashboard");
+
+        router.push(
+          "/customer/dashboard"
+        );
       }
 
     }
@@ -90,7 +119,9 @@ export default function LoginPage() {
     catch(error: any){
 
       toast.error(
+
         error.response?.data?.message ||
+
         "Login failed"
       );
     }
@@ -98,59 +129,95 @@ export default function LoginPage() {
 
   return (
 
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div className="auth-page">
 
-      <form
-        onSubmit={handleLogin}
-        className="bg-slate-900 p-10 rounded-xl w-100"
-      >
+      <div className="auth-card">
 
-        <h1 className="text-3xl font-bold mb-8 text-center text-orange-400">
-          Login
-        </h1>
+        <div className="auth-header">
 
-        <select
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          className="w-full p-3 rounded mb-4"
-        >
-          <option value="customer">
-            Customer
-          </option>
+          <h1>
+            Welcome Back
+          </h1>
 
-          <option value="distributor">
-            Distributor
-          </option>
+          <p>
+            Login to continue to FuelFlow
+          </p>
 
-          <option value="admin">
-            Admin
-          </option>
-        </select>
+        </div>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full p-3 rounded mb-4"
-          onChange={handleChange}
-        />
+        <form onSubmit={handleLogin}>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full p-3 rounded mb-6"
-          onChange={handleChange}
-        />
+          <div className="input-group">
 
-        <button
-          type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 py-3 rounded font-semibold"
-        >
-          Login
-        </button>
+            <label>
+              Login As
+            </label>
 
-      </form>
+            <select
+              value={role}
+              onChange={(e) =>
+                setRole(e.target.value)
+              }
+            >
+
+              <option value="customer">
+                Customer
+              </option>
+
+              <option value="distributor">
+                Distributor
+              </option>
+
+              <option value="admin">
+                Admin
+              </option>
+
+            </select>
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter email"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Password
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <button
+            type="submit"
+            className="auth-btn"
+          >
+
+            Login
+
+          </button>
+
+        </form>
+
+      </div>
 
     </div>
   );

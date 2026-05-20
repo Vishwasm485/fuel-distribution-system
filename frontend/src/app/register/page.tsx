@@ -5,24 +5,34 @@ import { useState } from "react";
 import API from "@/services/api";
 
 import toast from "react-hot-toast";
+import "../login/login.css";
 
 export default function RegisterPage() {
 
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    password: "",
-  });
+  const [formData, setFormData] =
+    useState({
+
+      name: "",
+
+      email: "",
+
+      phone: "",
+
+      address: "",
+
+      password: "",
+    });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
 
     setFormData({
+
       ...formData,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value,
     });
   };
 
@@ -32,23 +42,181 @@ export default function RegisterPage() {
 
     e.preventDefault();
 
+    const trimmedName =
+      formData.name.trim();
+
+    const trimmedEmail =
+      formData.email.trim();
+
+    const trimmedPhone =
+      formData.phone.trim();
+
+    const trimmedAddress =
+      formData.address.trim();
+
+    const trimmedPassword =
+      formData.password.trim();
+
+    // =========================
+    // NAME VALIDATION
+    // =========================
+
+    if(!trimmedName){
+
+      toast.error(
+        "Name is required"
+      );
+
+      return;
+    }
+
+    if(trimmedName.length < 3){
+
+      toast.error(
+        "Name must be at least 3 characters"
+      );
+
+      return;
+    }
+
+    // =========================
+    // EMAIL VALIDATION
+    // =========================
+
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!trimmedEmail){
+
+      toast.error(
+        "Email is required"
+      );
+
+      return;
+    }
+
+    if(!emailRegex.test(trimmedEmail)){
+
+      toast.error(
+        "Enter valid email address"
+      );
+
+      return;
+    }
+
+    // =========================
+    // PHONE VALIDATION
+    // =========================
+
+    const phoneRegex =
+      /^[6-9]\d{9}$/;
+
+    if(!trimmedPhone){
+
+      toast.error(
+        "Phone number is required"
+      );
+
+      return;
+    }
+
+    if(!phoneRegex.test(trimmedPhone)){
+
+      toast.error(
+        "Enter valid 10 digit phone number"
+      );
+
+      return;
+    }
+
+    // =========================
+    // ADDRESS VALIDATION
+    // =========================
+
+    if(!trimmedAddress){
+
+      toast.error(
+        "Address is required"
+      );
+
+      return;
+    }
+
+    if(trimmedAddress.length < 10){
+
+      toast.error(
+        "Address is too short"
+      );
+
+      return;
+    }
+
+    // =========================
+    // PASSWORD VALIDATION
+    // =========================
+
+    if(!trimmedPassword){
+
+      toast.error(
+        "Password is required"
+      );
+
+      return;
+    }
+
+    if(trimmedPassword.length < 6){
+
+      toast.error(
+        "Password must be at least 6 characters"
+      );
+
+      return;
+    }
+
     try {
 
       await API.post(
+
         "/customer/register",
-        formData
+
+        {
+          name: trimmedName,
+
+          email: trimmedEmail,
+
+          phone: trimmedPhone,
+
+          address: trimmedAddress,
+
+          password: trimmedPassword,
+        }
       );
 
       toast.success(
         "Registration Successful"
       );
 
+      setFormData({
+
+        name: "",
+
+        email: "",
+
+        phone: "",
+
+        address: "",
+
+        password: "",
+      });
+
     }
 
     catch(error: any){
 
       toast.error(
+
         error.response?.data?.message ||
+
         "Registration failed"
       );
     }
@@ -56,65 +224,116 @@ export default function RegisterPage() {
 
   return (
 
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+    <div className="auth-page">
 
-      <form
-        onSubmit={handleRegister}
-        className="bg-slate-900 p-10 rounded-xl w-112.5"
-      >
+      <div className="auth-card register-card">
 
-        <h1 className="text-3xl font-bold mb-8 text-center text-orange-400">
-          Customer Register
-        </h1>
+        <div className="auth-header">
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          className="w-full p-3 rounded mb-4"
-          onChange={handleChange}
-        />
+          <h1>
+            Create Account
+          </h1>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          className="w-full p-3 rounded mb-4"
-          onChange={handleChange}
-        />
+          <p>
+            Register as a customer
+          </p>
 
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          className="w-full p-3 rounded mb-4"
-          onChange={handleChange}
-        />
+        </div>
 
-        <input
-          type="text"
-          name="address"
-          placeholder="Address"
-          className="w-full p-3 rounded mb-4"
-          onChange={handleChange}
-        />
+        <form onSubmit={handleRegister}>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          className="w-full p-3 rounded mb-6"
-          onChange={handleChange}
-        />
+          <div className="input-group">
 
-        <button
-          type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 py-3 rounded font-semibold"
-        >
-          Register
-        </button>
+            <label>
+              Full Name
+            </label>
 
-      </form>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              placeholder="Enter name"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Email Address
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              placeholder="Enter email"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Phone Number
+            </label>
+
+            <input
+              type="text"
+              name="phone"
+              value={formData.phone}
+              placeholder="Enter phone number"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Address
+            </label>
+
+            <input
+              type="text"
+              name="address"
+              value={formData.address}
+              placeholder="Enter address"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <div className="input-group">
+
+            <label>
+              Password
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              placeholder="Create password"
+              onChange={handleChange}
+            />
+
+          </div>
+
+          <button
+            type="submit"
+            className="auth-btn"
+          >
+
+            Register
+
+          </button>
+
+        </form>
+
+      </div>
 
     </div>
   );
